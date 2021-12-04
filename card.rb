@@ -1,42 +1,50 @@
 class Weapon < Sprite
-    attr_accessor :name,:attack,:attribute,:image
-    def initialize(name,attack,attribute,image)
+    attr_accessor :name,:attack,:attribute
+    def initialize(name,attack,attribute,img)
         @name = name
         @attack = attack
         @attribute = attribute
-        @image = image
+        x = 0
+        y = 0
+        image = img
+        super(x,y,image)
     end
 end
-
 class Armor < Sprite
-    attr_accessor :name,:defence,:attribute,:image
-    def initialize(name,defence,attribute,image)
+    attr_accessor :name,:defence,:attribute
+    def initialize(name,defence,attribute,img)
         @name = name
         @adefence = defence
         @attribute = attribute
-        @image = image
+        x = 0
+        y = 0
+        image = img
+        super(x,y,image)
     end
 end
 
 class Item < Sprite
-    attr_accessor :name,:hp,:mp,:image
-    def initialize(name,hp,mp,image)
+    attr_accessor :name,:hp,:mp
+    def initialize(name,hp,mp,img)
         @name = name
         @hp = hp
         @mp = mp
-        @image = image
+        x = 0
+        y = 0
+        image = img
+        super(x,y,image)
     end
 end
 
-sword = Weapon.new("剣",10,0,"sword.png")
-axe = Weapon.new("斧",5,0,"axe.png")
-hammer = Weapon.new("ハンマー",8,0,"hammer.png")
-nife = Weapon.new("ナイフ",2,0,"nife.png")
+#画像の読み込み
+Image.register(:sword,'images/sword.png')
+Image.register(:axe,'images/axe.png')
+Image.register(:hammer,'images/hammer.png')
+Image.register(:nife,'images/nife.png')
+Image.register(:helmet,'images/helmet.png')
+Image.register(:chest,'images/chest.png')
+Image.register(:boots,'images/boots.png')
+Image.register(:hand,'images/hand.png')
+Image.register(:smile_water,'images/smile_water.png')
+Image.register(:smile_flower,'images/smile_flower.png')
 
-helmet = Armor.new("ヘルメット",3,0,"helmet.png")
-chest = Armor.new("チェスト",6,0,"chest.png")
-boots = Armor.new("ブーツ",4,0,"boots.png")
-hand = Armor.new("小手",2,0,"hand.png")
-
-smile_water = Item.new("スマイルウォーター",5,0,"smile_water.png")
-smile_flower = Item.new("スマイルの花",0,5,"smile_flower.png")
