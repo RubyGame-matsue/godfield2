@@ -17,8 +17,8 @@ Image.register(:smile_water,'images/smile_water.png')
 Image.register(:smile_flower,'images/smile_flower.png')
 
 Window.load_resources do
-    Window.width  = 800
-    Window.height = 600
+    Window.width  = 1400
+    Window.height = 700
     player=Player.new()
     com=Com.new()
     font = Font.new(32)
@@ -45,37 +45,104 @@ Window.load_resources do
         com.mp=10
 
         hand=[]
+        hand_exist=[] #手札にあるか
+        field=[]
         
         #手札生成
         5.times { 
             hand << rand(10)
+            hand_exist << 1
         }
         
         turn = 0
         Window.loop do
+            Window.draw_box_fill(0, 0, 1400, 700, C_GREEN, 0)#背景
+            Window.draw_box(150, 100, 500, 500, C_WHITE, 0)#フィールド
+            Window.draw_box_fill(200, 430, 450, 480, C_WHITE, 0)#祈るボタン
+
             if player.hp<=0 || com.hp<=0 
                 break
             end
-            Window.draw_box_fill(0, 00, 800, 600, C_GREEN, 0)
-            if turn==0 #player
-                Window.draw_font(200, 100, "#{player.mp}", font, {:color => C_WHITE})
+            ############     player      ##########
+            if turn==0 
+                Window.draw_font(100, 20, "player", font, {:color => C_WHITE})
                 if Input.mouse_push?(M_LBUTTON)
-                    turn=1 
+                    x = Input.mouse_x
+                    y = Input.mouse_y
+                    if y > 540 && y < 660
+                        if x > 90 && x < 210
+                            field << hand[0]
+                            hand_exist[0]=0
+                        elsif x > 240 && x < 360
+                            field << hand[1]
+                            hand_exist[1]=0
+                        elsif x > 390 && x < 510
+                            field << hand[2]
+                            hand_exist[2]=0
+                        elsif x > 540 && x < 660
+                            field << hand[3]
+                            hand_exist[3]=0
+                        elsif x > 690 && x < 810
+                            field << hand[4]
+                            hand_exist[4]=0
+                        end
+                    
+                    elsif y > 430 && y < 480 && x > 200 && x < 450 #祈る　相手のターンへ
+                        turn=1
+                    elsif y > 100 && y < 500 && x > 150 && x < 500 #カードを使用し相手のターンへ
+                        field.each do |n|
+                            if card[n].kind_of?(Weapon) #Weapon使用
+                                com.hp -= card[n].attack
+                            end
+                        end
+                        field.slice!(0,field.size) #配列を空に
+                        turn=1
+                    end
                 end
-            elsif turn==1 #com
-                Window.draw_font(300, 100, "#{player.hp}", font, {:color => C_WHITE})
-                if Input.mouse_push?(M_LBUTTON)
+                
+            ###############    com    ############
+            elsif turn==1 
+                Window.draw_font(100, 20, "com", font, {:color => C_WHITE})
+                if Input.mouse_push?(M_LBUTTON) #playerのターンへ
                     turn=0
+                    #足りない枚数手札を増やす
+                    hand.each_with_index do |n,i|
+                        if hand_exist[i] == 0
+                            hand[i]=rand(10)
+                            hand_exist[i]=1
+                        end
+                    end
+                end 
+            end
+
+            ##############     表示    ############
+            #手札の表示
+            if turn==0 #playerのターン
+                hand.each_with_index do |n,i|
+                    Window.draw_scale(150*i-150,300,card[n].image,0.2,0.2,nil,nil,0)
+                    if hand_exist[i] == 0
+                        Window.draw_box(150*i+90, 540, 150*i+210, 660, C_RED, 0)
+                    end
+                end
+            elsif turn==1 #comのターン
+                hand.each_with_index do |n,i|
+                    if hand_exist[i] == 1
+                        Window.draw_scale(150*i-150,300,card[n].image,0.2,0.2,nil,nil,0)
+                    else
+                        Window.draw_box(150*i+90, 540, 150*i+210, 660, C_WHITE, 0)
+                    end
                 end
             end
-            Window.draw_scale(0,100,card[hand[0]].image,0.2,0.2,100,450,0)
-            Window.draw_scale(100,100,card[hand[1]].image,0.2,0.2,150,450,0)
-            Window.draw_scale(200,100,card[hand[2]].image,0.2,0.2,200,450,0)
-            Window.draw_scale(300,100,card[hand[3]].image,0.2,0.2,250,450,0)
-            Window.draw_scale(400,100,card[hand[4]].image,0.2,0.2,300,450,0)
-            #sword.draw
-            #axe.draw
-            #sleep 1
+            
+            #場のカードの表示
+            field.each_with_index do |n,i|
+                Window.draw_scale(0,120*i-200,card[n].image,0.2,0.2,nil,nil,0)
+            end
+            
+            #HP,MP表示
+            Window.draw_font(600, 20, "player hp:#{player.hp} mp:#{player.mp}", font, {:color => C_WHITE})
+            Window.draw_font(600, 120, "com hp:#{com.hp} mp:#{com.mp}", font, {:color => C_WHITE})
+
         end
         #result()
     end
