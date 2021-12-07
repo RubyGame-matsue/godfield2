@@ -59,20 +59,23 @@ Window.load_resources do
             Window.draw_box_fill(0, 00, 800, 600, C_GREEN, 0)
             if turn==0 #player
                 Window.draw_font(200, 100, "#{player.mp}", font, {:color => C_WHITE})
-                turn=1 
+                if Input.mouse_push?(M_LBUTTON)
+                    turn=1 
+                end
             elsif turn==1 #com
                 Window.draw_font(300, 100, "#{player.hp}", font, {:color => C_WHITE})
-                
-                turn=0
+                if Input.mouse_push?(M_LBUTTON)
+                    turn=0
+                end
             end
-            Window.draw_scale(0,100,card[0].image,0.2,0.2,100,nil,0)
-            Window.draw_scale(100,100,card[1].image,0.2,0.2,150,nil,0)
-            Window.draw_scale(200,100,card[2].image,0.2,0.2,200,nil,0)
-            Window.draw_scale(300,100,card[3].image,0.2,0.2,250,nil,0)
-            Window.draw_scale(400,100,card[4].image,0.2,0.2,300,nil,0)
+            Window.draw_scale(0,100,card[hand[0]].image,0.2,0.2,100,450,0)
+            Window.draw_scale(100,100,card[hand[1]].image,0.2,0.2,150,450,0)
+            Window.draw_scale(200,100,card[hand[2]].image,0.2,0.2,200,450,0)
+            Window.draw_scale(300,100,card[hand[3]].image,0.2,0.2,250,450,0)
+            Window.draw_scale(400,100,card[hand[4]].image,0.2,0.2,300,450,0)
             #sword.draw
             #axe.draw
-            sleep 1
+            #sleep 1
         end
         #result()
     end
