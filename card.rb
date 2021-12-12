@@ -36,4 +36,12 @@ class Item < Sprite
     end
 end
 
-
+class Magic < Sprite
+    attr_accessor :name,:mp,:type
+    def initialize(name,mp,type,img)
+        @name = name
+        @mp = mp
+        image = img
+        super(0,0,image)
+    end
+end
