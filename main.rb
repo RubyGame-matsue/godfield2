@@ -48,12 +48,18 @@ Window.load_resources do
         hand=[]
         hand_exist=[] #手札にあるか
         field=[]
+        
+        comhand=[]
+        comhand_exist=[] #手札にあるか
+        comfield=[]
 
         
         #手札生成
         5.times { 
             hand << rand(10)
             hand_exist << 1
+            comhand << rand(10)
+            comhand_exist << 1
         }
         
         turn = 0
@@ -64,6 +70,7 @@ Window.load_resources do
             if player.hp<=0 || com.hp<=0 
                 break
             end
+            
             ############     player      ##########
             if turn==0 
                 Window.draw_font(100, 20, "player", font, {:color => C_WHITE})
@@ -181,6 +188,13 @@ Window.load_resources do
                             end
                         end
                         field.slice!(0,field.size) #配列を空に
+                        #足りない枚数手札を増やす
+                        hand.each_with_index do |n,i|
+                        if hand_exist[i] == 0
+                            hand[i]=rand(10)
+                            hand_exist[i]=1
+                        end
+                    end
                         turn=1
                     end
                 end
@@ -188,13 +202,27 @@ Window.load_resources do
             ###############    com    ############
             elsif turn==1 
                 Window.draw_font(100, 20, "com", font, {:color => C_WHITE})
+                
+                a=rand(5)
+                if comhand_exist[a] == 1 && comfield.size < 3
+                    comfield << hand[a]
+                    comhand_exist[a] = 0
+                end
+                
                 if Input.mouse_push?(M_LBUTTON) #playerのターンへ
                     turn=0
+                    comfield.each do |n|
+                        if card[n].kind_of?(Weapon) #Weapon使用
+                            player.hp -= card[n].attack
+                        end
+                    end
+                    comfield.slice!(0,comfield.size) #配列を空に
+                    
                     #足りない枚数手札を増やす
-                    hand.each_with_index do |n,i|
-                        if hand_exist[i] == 0
-                            hand[i]=rand(10)
-                            hand_exist[i]=1
+                    comhand.each_with_index do |n,i|
+                        if comhand_exist[i] == 0
+                            comhand[i]=rand(10)
+                            comhand_exist[i]=1
                         end
                     end
                 end 
@@ -218,9 +246,17 @@ Window.load_resources do
                     end
                 end
             end
-            
+            comhand.each_with_index do |n,i|
+                    Window.draw(150*i+90,240,card[n].image,0)
+                    if comhand_exist[i] == 0
+                        Window.draw_box(150*i+90, 240, 150*i+210, 360, C_RED, 0)
+                    end
+                end
             #場のカードの表示
             field.each_with_index do |n,i|
+                Window.draw(240,125*i+100,card[n].image,0)
+            end
+            comfield.each_with_index do |n,i|
                 Window.draw(240,125*i+100,card[n].image,0)
             end
             
