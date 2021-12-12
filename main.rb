@@ -172,7 +172,7 @@ Window.load_resources do
                             end
                         end
                     
-                    elsif y > 430 && y < 480 && x > 200 && x < 450 #祈る　相手のターンへ
+                    elsif y > 430 && y < 480 && x > 200 && x < 450 && field.size == 0#祈る　相手のターンへ
                         turn=1
                     elsif y > 100 && y < 500 && x > 150 && x < 500 && field.size > 0 #カードを使用し相手のターンへ
                         field.each do |n|
