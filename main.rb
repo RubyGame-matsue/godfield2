@@ -246,12 +246,7 @@ Window.load_resources do
                     end
                 end
             end
-            comhand.each_with_index do |n,i|
-                    Window.draw(150*i+90,240,card[n].image,0)
-                    if comhand_exist[i] == 0
-                        Window.draw_box(150*i+90, 240, 150*i+210, 360, C_RED, 0)
-                    end
-                end
+            
             #場のカードの表示
             field.each_with_index do |n,i|
                 Window.draw(240,125*i+100,card[n].image,0)
