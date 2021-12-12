@@ -198,7 +198,6 @@ Window.load_resources do
                 
                 
                 
-                
             ###############    com attack   ############
             elsif turn==1
                 Window.draw_font(100, 20, "com attack", font, {:color => C_WHITE})
@@ -449,6 +448,7 @@ Window.load_resources do
                 end
             end
             
+<<<<<<< HEAD
             if field.size == 0
                 Window.draw_box_fill(200, 430, 450, 480, C_WHITE, 0)#祈るボタン
                 if(turn == 2)
@@ -458,13 +458,35 @@ Window.load_resources do
                 end
             end
             
+=======
+            attack = 0
+            defence =0
+>>>>>>> d47966a548a1665e3cdaf39d8258ad560559ccf2
             #場のカードの表示
             field.each_with_index do |n,i|
                 Window.draw(240,125*i+100,card[n].image,0)
+                if card[n].kind_of?(Weapon)
+                    attack += card[n].attack
+                elsif card[n].kind_of?(Armor)
+                    defence += card[n].defence
+                end
+                Window.draw_box_fill(200, 430, 450, 480, C_WHITE, 0)#祈るボタン
+                Window.draw_font(250, 435, "攻：#{attack} 防：#{defence}", font, {:color => C_BLACK})
             end
+            
+            attack = 0
+            defence = 0
             comfield.each_with_index do |n,i|
                 Window.draw(740,125*i+100,card[n].image,0)
+                if card[n].kind_of?(Weapon)
+                    attack += card[n].attack
+                elsif card[n].kind_of?(Armor)
+                    defence += card[n].defence
+                end
+                Window.draw_box_fill(700, 430, 950, 480, C_WHITE, 0)#祈るボタン
+                Window.draw_font(750, 435, "攻：#{attack} 防：#{defence}", font, {:color => C_BLACK})
             end
+            
             
             #HP,MP表示
             Window.draw_font(1000, 20, "player hp:#{player.hp} mp:#{player.mp}", font, {:color => C_WHITE})
