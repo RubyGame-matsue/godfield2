@@ -17,7 +17,7 @@ Image.register(:hand,'images/hand.png')
 Image.register(:smile_water,'images/smile_water.png')
 Image.register(:smile_flower,'images/smile_flower.png')
 Image.register(:cold,'images/cold.png')
-Image.register(:heaven.'images/heaven.png')
+Image.register(:heaven,'images/heaven.png')
 
 Window.load_resources do
     Window.width  = 1400
