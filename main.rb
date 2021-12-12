@@ -16,6 +16,8 @@ Image.register(:boots,'images/boots.png')
 Image.register(:hand,'images/hand.png')
 Image.register(:smile_water,'images/smile_water.png')
 Image.register(:smile_flower,'images/smile_flower.png')
+Image.register(:cold,'images/cold.png')
+Image.register(:heaven.'images/heaven.png')
 
 Window.load_resources do
     Window.width  = 1400
@@ -37,6 +39,8 @@ Window.load_resources do
     card << hand = Armor.new("小手",2,0,Image[:hand])                           #8
     card << smile_water = Item.new("スマイルの水",5,0,Image[:smile_water])      #9
     card << smile_flower = Item.new("スマイルの花",0,5,Image[:smile_flower])    #10
+    card << cold = Magic.new("風邪",6,1,Image[:cold])                          #11
+    card << heaven = Magic.new("天国病",15,4,Image[:heaven])                    #12
 
     Window.loop do
         player.hp=20
@@ -55,9 +59,9 @@ Window.load_resources do
         
         #手札生成
         5.times { 
-            hand << rand(10)
+            hand << rand(12)
             hand_exist << 1
-            comhand << rand(10)
+            comhand << rand(12)
             comhand_exist << 1
         }
         
