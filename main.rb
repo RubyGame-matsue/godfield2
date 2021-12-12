@@ -39,7 +39,6 @@ Window.load_resources do
     card << smile_flower = Item.new("スマイルの花",0,5,Image[:smile_flower])    #10
 
     Window.loop do
-        #init
         player.hp=20
         player.mp=10
         com.hp=20
@@ -66,13 +65,129 @@ Window.load_resources do
         Window.loop do
             Window.draw_box_fill(0, 0, 1400, 700, C_GREEN, 0)#背景
             Window.draw_box(150, 100, 500, 500, C_WHITE, 0)#フィールド
+            Window.draw_box(600, 100, 950, 500, C_WHITE, 0)#フィールド
+            Window.draw_font(1000, 20, "player hp:#{player.hp} mp:#{player.mp}", font, {:color => C_WHITE})
+            Window.draw_font(1000, 120, "com hp:#{com.hp} mp:#{com.mp}", font, {:color => C_WHITE})
 
             if player.hp<=0 || com.hp<=0 
+                player.hp=20
+                player.mp=10
+                com.hp=20
+                com.mp=10
                 break
             end
+          
+            ############     player attack     ##########
+            if turn==0
+                Window.draw_font(100, 20, "player", font, {:color => C_WHITE})
+                if field.size == 0
+                    Window.draw_box_fill(200, 430, 450, 480, C_WHITE, 0)#祈るボタン
+                    Window.draw_font(300, 435, "祈る", font, {:color => C_BLACK})
+                end
+                x = Input.mouse_x
+                y = Input.mouse_y
             
-            ############     player      ##########
-            if turn==0 
+                if Input.mouse_push?(M_LBUTTON)
+                    if y > 540 && y < 660
+                        if x > 90 && x < 210
+                            if hand_exist[0] == 1
+                                field << hand[0]
+                                hand_exist[0]=0
+                            elsif hand_exist[0] == 0
+                                field.delete(hand[0])
+                                hand_exist[0]=1
+                            end
+                        elsif x > 240 && x < 360
+                            if hand_exist[1] == 1
+                                field << hand[1]
+                                hand_exist[1]=0
+                            elsif hand_exist[1] == 0
+                                field.delete(hand[1])
+                                hand_exist[1]=1
+                            end
+                        elsif x > 390 && x < 510
+                            if hand_exist[2] == 1
+                                field << hand[2]
+                                hand_exist[2]=0
+                            elsif hand_exist[2] == 0
+                                field.delete(hand[2])
+                                hand_exist[2]=1
+                            end
+                        elsif x > 540 && x < 660
+                            if hand_exist[3] == 1
+                                field << hand[3]
+                                hand_exist[3]=0
+                            elsif hand_exist[3] == 0
+                                field.delete(hand[3])
+                                hand_exist[3]=1
+                            end
+                        elsif x > 690 && x < 810
+                            if hand_exist[4] == 1
+                                field << hand[4]
+                                hand_exist[4]=0
+                            elsif hand_exist[4] == 0
+                                field.delete(hand[4])
+                                hand_exist[4]=1
+                            end
+                        end
+                    
+                    elsif y > 430 && y < 480 && x > 200 && x < 450 && field.size == 0#祈る　相手のターンへ
+                        turn=1
+                    elsif y > 100 && y < 500 && x > 150 && x < 500 && field.size > 0 #カードを使用し相手のターンへ
+                        field.each do |n|
+                            if card[n].kind_of?(Weapon) #Weapon使用
+                                com.hp -= card[n].attack
+                            end
+                        end
+                        field.slice!(0,field.size) #配列を空に
+                        #足りない枚数手札を増やす
+                        hand.each_with_index do |n,i|
+                            if hand_exist[i] == 0
+                                hand[i]=rand(10)
+                                hand_exist[i]=1
+                            end
+                        end
+                        turn=1
+                    end
+                end
+                
+                
+                
+                
+                
+            ###############    com attack   ############
+            elsif turn==1
+                Window.draw_font(100, 20, "com", font, {:color => C_WHITE})
+                
+                a=rand(5)
+                if comhand_exist[a] == 1 && comfield.size < 3
+                    comfield << hand[a]
+                    comhand_exist[a] = 0
+                end
+                
+                if Input.mouse_push?(M_LBUTTON) #playerのターンへ
+                    turn=0
+                    comfield.each do |n|
+                        if card[n].kind_of?(Weapon) #Weapon使用
+                            player.hp -= card[n].attack
+                        end
+                    end
+                    comfield.slice!(0,comfield.size) #配列を空に
+                    
+                    #足りない枚数手札を増やす
+                    comhand.each_with_index do |n,i|
+                        if comhand_exist[i] == 0
+                            comhand[i]=rand(10)
+                            comhand_exist[i]=1
+                        end
+                    end
+                end 
+                
+                
+                
+                
+            ############     player defense     ##########
+            elsif turn==2
                 Window.draw_font(100, 20, "player", font, {:color => C_WHITE})
                 if field.size == 0
                     Window.draw_box_fill(200, 430, 450, 480, C_WHITE, 0)#祈るボタン
@@ -190,17 +305,19 @@ Window.load_resources do
                         field.slice!(0,field.size) #配列を空に
                         #足りない枚数手札を増やす
                         hand.each_with_index do |n,i|
-                        if hand_exist[i] == 0
-                            hand[i]=rand(10)
-                            hand_exist[i]=1
+                            if hand_exist[i] == 0
+                                hand[i]=rand(10)
+                                hand_exist[i]=1
+                            end
                         end
-                    end
                         turn=1
                     end
                 end
                 
-            ###############    com    ############
-            elsif turn==1 
+                
+                
+            ###############    com defense   ############
+            elsif turn==3
                 Window.draw_font(100, 20, "com", font, {:color => C_WHITE})
                 
                 a=rand(5)
@@ -228,6 +345,8 @@ Window.load_resources do
                 end 
             end
 
+
+
             ##############     表示    ############
             #手札の表示
             if turn==0 #playerのターン
@@ -252,12 +371,12 @@ Window.load_resources do
                 Window.draw(240,125*i+100,card[n].image,0)
             end
             comfield.each_with_index do |n,i|
-                Window.draw(240,125*i+100,card[n].image,0)
+                Window.draw(740,125*i+100,card[n].image,0)
             end
             
             #HP,MP表示
-            Window.draw_font(600, 20, "player hp:#{player.hp} mp:#{player.mp}", font, {:color => C_WHITE})
-            Window.draw_font(600, 120, "com hp:#{com.hp} mp:#{com.mp}", font, {:color => C_WHITE})
+            Window.draw_font(1000, 20, "player hp:#{player.hp} mp:#{player.mp}", font, {:color => C_WHITE})
+            Window.draw_font(1000, 120, "com hp:#{com.hp} mp:#{com.mp}", font, {:color => C_WHITE})
 
         end
         #result()
