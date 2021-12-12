@@ -37,8 +37,26 @@ Window.load_resources do
     card << hand = Armor.new("小手",2,0,Image[:hand])                           #8
     card << smile_water = Item.new("スマイルの水",5,0,Image[:smile_water])      #9
     card << smile_flower = Item.new("スマイルの花",0,5,Image[:smile_flower])    #10
+    gamestart = false
 
     Window.loop do
+       #スタート画面
+        if gamestart == false
+            puts "start"
+            font1 = Font.new(150)
+            x = Input.mouse_x
+            y = Input.mouse_y
+            Window.draw_box_fill(0, 0, 1400, 700, [128, 255, 255])#背景
+            Window.draw_font(500, 200, "BUDFIELD", font1, {:color => C_BLACK})
+            Window.draw_box_fill(300, 500, 500, 620, C_WHITE, 0) 
+            Window.draw_font(350, 550, "START", font, {:color => C_BLACK}) 
+            if x>300 && x<500 && y>500 && y<620
+                if Input.mouse_push?(M_LBUTTON)
+                    gamestart = true
+                end
+            end
+        else
+
         player.hp=20
         player.mp=10
         com.hp=20
@@ -453,6 +471,7 @@ Window.load_resources do
             Window.draw_font(1000, 120, "com hp:#{com.hp} mp:#{com.mp}", font, {:color => C_WHITE})
 
         end
+    end
         #result()
     end
 end
