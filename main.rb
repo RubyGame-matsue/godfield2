@@ -80,10 +80,6 @@ Window.load_resources do
             ############     player attack     ##########
             if turn==0
                 Window.draw_font(100, 20, "player attack", font, {:color => C_WHITE})
-                if field.size == 0
-                    Window.draw_box_fill(200, 430, 450, 480, C_WHITE, 0)#祈るボタン
-                    Window.draw_font(300, 435, "祈る", font, {:color => C_BLACK})
-                end
                 x = Input.mouse_x
                 y = Input.mouse_y
                 ###  feild表示  ###
@@ -151,7 +147,7 @@ Window.load_resources do
                 if Input.mouse_push?(M_LBUTTON)
                     if y > 540 && y < 660
                         if x > 90 && x < 210
-                            if hand_exist[0] == 1
+                            if hand_exist[0] == 1 && !card[hand[0]].kind_of?(Armor)
                                 field << hand[0]
                                 hand_exist[0]=0
                             elsif hand_exist[0] == 0
@@ -159,7 +155,7 @@ Window.load_resources do
                                 hand_exist[0]=1
                             end
                         elsif x > 240 && x < 360
-                            if hand_exist[1] == 1
+                            if hand_exist[1] == 1  && !card[hand[1]].kind_of?(Armor)
                                 field << hand[1]
                                 hand_exist[1]=0
                             elsif hand_exist[1] == 0
@@ -167,7 +163,7 @@ Window.load_resources do
                                 hand_exist[1]=1
                             end
                         elsif x > 390 && x < 510
-                            if hand_exist[2] == 1
+                            if hand_exist[2] == 1  && !card[hand[2]].kind_of?(Armor)
                                 field << hand[2]
                                 hand_exist[2]=0
                             elsif hand_exist[2] == 0
@@ -175,7 +171,7 @@ Window.load_resources do
                                 hand_exist[2]=1
                             end
                         elsif x > 540 && x < 660
-                            if hand_exist[3] == 1
+                            if hand_exist[3] == 1  && !card[hand[3]].kind_of?(Armor)
                                 field << hand[3]
                                 hand_exist[3]=0
                             elsif hand_exist[3] == 0
@@ -183,7 +179,7 @@ Window.load_resources do
                                 hand_exist[3]=1
                             end
                         elsif x > 690 && x < 810
-                            if hand_exist[4] == 1
+                            if hand_exist[4] == 1  && !card[hand[4]].kind_of?(Armor)
                                 field << hand[4]
                                 hand_exist[4]=0
                             elsif hand_exist[4] == 0
@@ -193,7 +189,7 @@ Window.load_resources do
                         end
                     
                     elsif y > 430 && y < 480 && x > 200 && x < 450 && field.size == 0#祈る　相手のターンへ
-                        turn=1
+                        turn=3
                     elsif y > 100 && y < 500 && x > 150 && x < 500 && field.size > 0 #カードを使用し相手のターンへ
                         turn=3
                     end
@@ -208,13 +204,13 @@ Window.load_resources do
                 Window.draw_font(100, 20, "com attack", font, {:color => C_WHITE})
                 
                 a=rand(5)
-                if comhand_exist[a] == 1 && comfield.size < 3
-                    comfield << hand[a]
+                if comhand_exist[a] == 1 && comfield.size < 1 && !card[comhand[a]].kind_of?(Armor)
+                    comfield << comhand[a]
                     comhand_exist[a] = 0
                 end
-                
+                turn=2
                 if Input.mouse_push?(M_LBUTTON) #playerのターンへ
-                    turn=2
+                    
                 end 
                 
                 
@@ -294,7 +290,7 @@ Window.load_resources do
                 if Input.mouse_push?(M_LBUTTON)
                     if y > 540 && y < 660
                         if x > 90 && x < 210
-                            if hand_exist[0] == 1
+                            if hand_exist[0] == 1  && card[hand[0]].kind_of?(Armor)
                                 field << hand[0]
                                 hand_exist[0]=0
                             elsif hand_exist[0] == 0
@@ -302,7 +298,7 @@ Window.load_resources do
                                 hand_exist[0]=1
                             end
                         elsif x > 240 && x < 360
-                            if hand_exist[1] == 1
+                            if hand_exist[1] == 1  && card[hand[1]].kind_of?(Armor)
                                 field << hand[1]
                                 hand_exist[1]=0
                             elsif hand_exist[1] == 0
@@ -310,7 +306,7 @@ Window.load_resources do
                                 hand_exist[1]=1
                             end
                         elsif x > 390 && x < 510
-                            if hand_exist[2] == 1
+                            if hand_exist[2] == 1  && card[hand[2]].kind_of?(Armor)
                                 field << hand[2]
                                 hand_exist[2]=0
                             elsif hand_exist[2] == 0
@@ -318,7 +314,7 @@ Window.load_resources do
                                 hand_exist[2]=1
                             end
                         elsif x > 540 && x < 660
-                            if hand_exist[3] == 1
+                            if hand_exist[3] == 1  && card[hand[3]].kind_of?(Armor)
                                 field << hand[3]
                                 hand_exist[3]=0
                             elsif hand_exist[3] == 0
@@ -326,7 +322,7 @@ Window.load_resources do
                                 hand_exist[3]=1
                             end
                         elsif x > 690 && x < 810
-                            if hand_exist[4] == 1
+                            if hand_exist[4] == 1  && card[hand[4]].kind_of?(Armor)
                                 field << hand[4]
                                 hand_exist[4]=0
                             elsif hand_exist[4] == 0
@@ -335,23 +331,28 @@ Window.load_resources do
                             end
                         end
                     
-                    elsif y > 430 && y < 480 && x > 200 && x < 450 && field.size == 0#祈る　相手のターンへ
-                        turn=1
-                    elsif y > 100 && y < 500 && x > 150 && x < 500 && field.size > 0 #カードを使用し相手のターンへ
+                    elsif y > 430 && y < 480 && x > 200 && x < 450 && field.size == 0 || y > 100 && y < 500 && x > 150 && x < 500 && field.size > 0 #カードを使用し相手のターンへ
                         attack=0
                         comfield.each do |n|
-                            if card[n].kind_of?(Weapon) #Weapon使用
+                            if card[n].kind_of?(Weapon)               #Weapon使用
                                 attack += card[n].attack
                             end
                         end
                         defence=0
                         field.each do |n|
-                            if card[n].kind_of?(Armor) #Armor使用
+                            if card[n].kind_of?(Armor)                #Armor使用
                                 defence += card[n].defence
                             end
                         end
                         if attack-defence > 0
                             player.hp -= attack-defence
+                        end
+                        
+                        comfield.each do |n|                          
+                            if card[n].kind_of?(Item)                 #Item使用
+                                com.hp += card[n].hp
+                                com.mp += card[n].mp
+                            end
                         end
                         field.slice!(0,field.size) #配列を空に
                         comfield.slice!(0,comfield.size) #配列を空に
@@ -379,27 +380,35 @@ Window.load_resources do
                 Window.draw_font(100, 20, "com defence", font, {:color => C_WHITE})
                 
                 a=rand(5)
-                if comhand_exist[a] == 1 && comfield.size < 3
-                    comfield << hand[a]
+                if comhand_exist[a] == 1 && comfield.size < 2 && card[comhand[a]].kind_of?(Armor)
+                    comfield << comhand[a]
                     comhand_exist[a] = 0
                 end
                 
                 if Input.mouse_push?(M_LBUTTON) #playerのターンへ
                     attack=0
                     field.each do |n|
-                        if card[n].kind_of?(Weapon) #Weapon使用
+                        if card[n].kind_of?(Weapon)             #Weapon使用
                             attack += card[n].attack
                         end
                     end
                     defence=0
                     comfield.each do |n|
-                        if card[n].kind_of?(Armor) #Armor使用
+                        if card[n].kind_of?(Armor)              #Armor使用
                             defence += card[n].defence
                         end
                     end
                     if attack-defence > 0
                         com.hp -= attack-defence
                     end
+                    
+                    field.each do |n|                          
+                        if card[n].kind_of?(Item)                 #Item使用
+                            player.hp += card[n].hp
+                            player.mp += card[n].mp
+                        end
+                    end
+                        
                     field.slice!(0,field.size) #配列を空に
                     comfield.slice!(0,comfield.size) #配列を空に
                     #足りない枚数手札を増やす
@@ -437,6 +446,15 @@ Window.load_resources do
                     else
                         Window.draw_box(150*i+90, 540, 150*i+210, 660, C_WHITE, 0)
                     end
+                end
+            end
+            
+            if field.size == 0
+                Window.draw_box_fill(200, 430, 450, 480, C_WHITE, 0)#祈るボタン
+                if(turn == 2)
+                    Window.draw_font(300, 435, "許す", font, {:color => C_BLACK})
+                else
+                    Window.draw_font(300, 435, "祈る", font, {:color => C_BLACK})
                 end
             end
             
