@@ -79,7 +79,7 @@ Window.load_resources do
           
             ############     player attack     ##########
             if turn==0
-                Window.draw_font(100, 20, "player", font, {:color => C_WHITE})
+                Window.draw_font(100, 20, "player attack", font, {:color => C_WHITE})
                 if field.size == 0
                     Window.draw_box_fill(200, 430, 450, 480, C_WHITE, 0)#祈るボタン
                     Window.draw_font(300, 435, "祈る", font, {:color => C_BLACK})
@@ -195,20 +195,7 @@ Window.load_resources do
                     elsif y > 430 && y < 480 && x > 200 && x < 450 && field.size == 0#祈る　相手のターンへ
                         turn=1
                     elsif y > 100 && y < 500 && x > 150 && x < 500 && field.size > 0 #カードを使用し相手のターンへ
-                        field.each do |n|
-                            if card[n].kind_of?(Weapon) #Weapon使用
-                                com.hp -= card[n].attack
-                            end
-                        end
-                        field.slice!(0,field.size) #配列を空に
-                        #足りない枚数手札を増やす
-                        hand.each_with_index do |n,i|
-                            if hand_exist[i] == 0
-                                hand[i]=rand(10)
-                                hand_exist[i]=1
-                            end
-                        end
-                        turn=1
+                        turn=3
                     end
                 end
                 
@@ -218,7 +205,7 @@ Window.load_resources do
                 
             ###############    com attack   ############
             elsif turn==1
-                Window.draw_font(100, 20, "com", font, {:color => C_WHITE})
+                Window.draw_font(100, 20, "com attack", font, {:color => C_WHITE})
                 
                 a=rand(5)
                 if comhand_exist[a] == 1 && comfield.size < 3
@@ -227,21 +214,7 @@ Window.load_resources do
                 end
                 
                 if Input.mouse_push?(M_LBUTTON) #playerのターンへ
-                    turn=0
-                    comfield.each do |n|
-                        if card[n].kind_of?(Weapon) #Weapon使用
-                            player.hp -= card[n].attack
-                        end
-                    end
-                    comfield.slice!(0,comfield.size) #配列を空に
-                    
-                    #足りない枚数手札を増やす
-                    comhand.each_with_index do |n,i|
-                        if comhand_exist[i] == 0
-                            comhand[i]=rand(10)
-                            comhand_exist[i]=1
-                        end
-                    end
+                    turn=2
                 end 
                 
                 
@@ -249,7 +222,7 @@ Window.load_resources do
                 
             ############     player defense     ##########
             elsif turn==2
-                Window.draw_font(100, 20, "player", font, {:color => C_WHITE})
+                Window.draw_font(100, 20, "player defence", font, {:color => C_WHITE})
                 if field.size == 0
                     Window.draw_box_fill(200, 430, 450, 480, C_WHITE, 0)#祈るボタン
                     Window.draw_font(300, 435, "祈る", font, {:color => C_BLACK})
@@ -365,12 +338,23 @@ Window.load_resources do
                     elsif y > 430 && y < 480 && x > 200 && x < 450 && field.size == 0#祈る　相手のターンへ
                         turn=1
                     elsif y > 100 && y < 500 && x > 150 && x < 500 && field.size > 0 #カードを使用し相手のターンへ
-                        field.each do |n|
+                        attack=0
+                        comfield.each do |n|
                             if card[n].kind_of?(Weapon) #Weapon使用
-                                com.hp -= card[n].attack
+                                attack += card[n].attack
                             end
                         end
+                        defence=0
+                        field.each do |n|
+                            if card[n].kind_of?(Armor) #Armor使用
+                                defence += card[n].defence
+                            end
+                        end
+                        if attack-defence > 0
+                            player.hp -= attack-defence
+                        end
                         field.slice!(0,field.size) #配列を空に
+                        comfield.slice!(0,comfield.size) #配列を空に
                         #足りない枚数手札を増やす
                         hand.each_with_index do |n,i|
                             if hand_exist[i] == 0
@@ -378,15 +362,21 @@ Window.load_resources do
                                 hand_exist[i]=1
                             end
                         end
-                        turn=1
+                        comhand.each_with_index do |n,i|
+                        if comhand_exist[i] == 0
+                            comhand[i]=rand(10)
+                            comhand_exist[i]=1
+                        end
+                    end
+                        turn=0
                     end
                 end
                 
                 
                 
-            ###############    com defense   ############
+            ###############    com defence   ############
             elsif turn==3
-                Window.draw_font(100, 20, "com", font, {:color => C_WHITE})
+                Window.draw_font(100, 20, "com defence", font, {:color => C_WHITE})
                 
                 a=rand(5)
                 if comhand_exist[a] == 1 && comfield.size < 3
@@ -395,21 +385,37 @@ Window.load_resources do
                 end
                 
                 if Input.mouse_push?(M_LBUTTON) #playerのターンへ
-                    turn=0
-                    comfield.each do |n|
+                    attack=0
+                    field.each do |n|
                         if card[n].kind_of?(Weapon) #Weapon使用
-                            player.hp -= card[n].attack
+                            attack += card[n].attack
                         end
                     end
+                    defence=0
+                    comfield.each do |n|
+                        if card[n].kind_of?(Armor) #Armor使用
+                            defence += card[n].defence
+                        end
+                    end
+                    if attack-defence > 0
+                        com.hp -= attack-defence
+                    end
+                    field.slice!(0,field.size) #配列を空に
                     comfield.slice!(0,comfield.size) #配列を空に
-                    
                     #足りない枚数手札を増やす
+                    hand.each_with_index do |n,i|
+                        if hand_exist[i] == 0
+                            hand[i]=rand(10)
+                            hand_exist[i]=1
+                        end
+                    end
                     comhand.each_with_index do |n,i|
                         if comhand_exist[i] == 0
                             comhand[i]=rand(10)
                             comhand_exist[i]=1
                         end
                     end
+                    turn=1
                 end 
             end
 
@@ -417,14 +423,14 @@ Window.load_resources do
 
             ##############     表示    ############
             #手札の表示
-            if turn==0 #playerのターン
+            if turn==0 || turn==2 #playerのターン
                 hand.each_with_index do |n,i|
                     Window.draw(150*i+90,540,card[n].image,0)
                     if hand_exist[i] == 0
                         Window.draw_box(150*i+90, 540, 150*i+210, 660, C_RED, 0)
                     end
                 end
-            elsif turn==1 #comのターン
+            elsif turn==1 || turn == 3 #comのターン
                 hand.each_with_index do |n,i|
                     if hand_exist[i] == 1
                         Window.draw(150*i+90,540,card[n].image,0)
