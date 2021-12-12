@@ -70,8 +70,6 @@ Window.load_resources do
             Window.draw_box_fill(0, 0, 1400, 700, C_GREEN, 0)#背景
             Window.draw_box(150, 100, 500, 500, C_WHITE, 0)#フィールド
             Window.draw_box(600, 100, 950, 500, C_WHITE, 0)#フィールド
-            Window.draw_font(275, 50, "player", font, {:color => C_WHITE})
-            Window.draw_font(725, 50, "com", font, {:color => C_WHITE})
             Window.draw_font(1000, 20, "player hp:#{player.hp} mp:#{player.mp}", font, {:color => C_WHITE})
             Window.draw_font(1000, 120, "com hp:#{com.hp} mp:#{com.mp}", font, {:color => C_WHITE})
 
@@ -148,7 +146,7 @@ Window.load_resources do
                     end
                             
                 end
-            
+                
                 ###  カード選択  ###
                 if Input.mouse_push?(M_LBUTTON)
                     if y > 540 && y < 660
@@ -289,6 +287,24 @@ Window.load_resources do
                         end
                     end
                             
+                end
+                
+                comfield.each do |n|                          
+                    if card[n].kind_of?(Item)                 #Itemだけならスキップ
+                        turn=0
+                    elsif
+                        turn=2
+                        break
+                    end
+                end
+                if turn ==0
+                    comfield.each do |n|                          
+                            if card[n].kind_of?(Item)                 #Item使用
+                                com.hp += card[n].hp
+                                com.mp += card[n].mp
+                            end
+                        end
+                    comfield.slice!(0,comfield.size) #配列を空に
                 end
             
                 ###  カード選択  ###
