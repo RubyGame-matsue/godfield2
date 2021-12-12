@@ -450,7 +450,6 @@ Window.load_resources do
                 end
             end
             
-<<<<<<< HEAD
             if field.size == 0
                 Window.draw_box_fill(200, 430, 450, 480, C_WHITE, 0)#祈るボタン
                 if(turn == 2)
@@ -460,10 +459,8 @@ Window.load_resources do
                 end
             end
             
-=======
             attack = 0
             defence =0
->>>>>>> d47966a548a1665e3cdaf39d8258ad560559ccf2
             #場のカードの表示
             field.each_with_index do |n,i|
                 Window.draw(240,125*i+100,card[n].image,0)
