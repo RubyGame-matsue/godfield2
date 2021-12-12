@@ -204,7 +204,7 @@ Window.load_resources do
             #手札の表示
             if turn==0 #playerのターン
                 hand.each_with_index do |n,i|
-                    Window.draw_scale(150*i-150,300,card[n].image,0.2,0.2,nil,nil,0)
+                    Window.draw(150*i+90,540,card[n].image,0)
                     if hand_exist[i] == 0
                         Window.draw_box(150*i+90, 540, 150*i+210, 660, C_RED, 0)
                     end
@@ -212,7 +212,7 @@ Window.load_resources do
             elsif turn==1 #comのターン
                 hand.each_with_index do |n,i|
                     if hand_exist[i] == 1
-                        Window.draw_scale(150*i-150,300,card[n].image,0.2,0.2,nil,nil,0)
+                        Window.draw(150*i+90,540,card[n].image,0)
                     else
                         Window.draw_box(150*i+90, 540, 150*i+210, 660, C_WHITE, 0)
                     end
@@ -221,7 +221,7 @@ Window.load_resources do
             
             #場のカードの表示
             field.each_with_index do |n,i|
-                Window.draw_scale(0,120*i-200,card[n].image,0.2,0.2,nil,nil,0)
+                Window.draw(240,120*i+40,card[n].image,0)
             end
             
             #HP,MP表示
