@@ -195,61 +195,68 @@ Window.load_resources do
                 end
                 x = Input.mouse_x
                 y = Input.mouse_y
+                ###  feild表示  ###
                 if y > 540 && y < 660
                     if x > 90 && x < 210
-                        Window.draw_box_fill(600, 300, 1000, 450, C_WHITE, 0)
-                        Window.draw(640,310,card[hand[0]].image,0)
+                        Window.draw_box_fill(1000, 300, 1350, 440, C_WHITE, 0)
+                        Window.draw(1020,310,card[hand[0]].image,0)
+                        Window.draw_font(1150, 320,card[hand[0]].name, font, {:color => C_BLACK})
                         if card[hand[0]].kind_of?(Weapon)
-                            Window.draw_font(800, 350,"攻撃力：#{card[hand[0]].attack}" , font, {:color => C_BLACK})
+                            Window.draw_font(1150, 360,"攻撃力：#{card[hand[0]].attack}" , font, {:color => C_BLACK})
                         elsif card[hand[0]].kind_of?(Armor)
-                            Window.draw_font(800, 350,"防御力：#{card[hand[0]].defence}" , font, {:color => C_BLACK})
+                            Window.draw_font(1150, 360,"防御力：#{card[hand[0]].defence}" , font, {:color => C_BLACK})
                         elsif card[hand[0]].kind_of?(Item)
-                            Window.draw_font(800, 350,"HP+#{card[hand[0]].hp}\nMP+#{card[hand[0]].mp}" , font, {:color => C_BLACK})
+                            Window.draw_font(1150, 360,"HP+#{card[hand[0]].hp}\nMP+#{card[hand[0]].mp}" , font, {:color => C_BLACK})
                         end
                     elsif x > 240 && x < 360
-                        Window.draw_box_fill(600, 300, 1000, 450, C_WHITE, 0)
-                        Window.draw(640,310,card[hand[1]].image,0)
+                        Window.draw_box_fill(1000, 300, 1350, 440, C_WHITE, 0)
+                        Window.draw(1020,310,card[hand[1]].image,0)
+                        Window.draw_font(1150, 320,card[hand[1]].name, font, {:color => C_BLACK})
                         if card[hand[1]].kind_of?(Weapon)
-                            Window.draw_font(800, 350,"攻撃力：#{card[hand[1]].attack}" , font, {:color => C_BLACK})
+                            Window.draw_font(1150, 360,"攻撃力：#{card[hand[1]].attack}" , font, {:color => C_BLACK})
                         elsif card[hand[1]].kind_of?(Armor)
-                            Window.draw_font(800, 350,"防御力：#{card[hand[1]].defence}" , font, {:color => C_BLACK})
+                            Window.draw_font(1150, 360,"防御力：#{card[hand[1]].defence}" , font, {:color => C_BLACK})
                         elsif card[hand[1]].kind_of?(Item)
-                            Window.draw_font(800, 350,"HP+#{card[hand[1]].hp}\nMP+#{card[hand[1]].mp}" , font, {:color => C_BLACK})
+                            Window.draw_font(1150, 360,"HP+#{card[hand[1]].hp}\nMP+#{card[hand[1]].mp}" , font, {:color => C_BLACK})
                         end
                     elsif x > 390 && x < 510
-                        Window.draw_box_fill(600, 300, 1000, 450, C_WHITE, 0)
-                        Window.draw(640,310,card[hand[2]].image,0)
+                        Window.draw_box_fill(1000, 300, 1350, 440, C_WHITE, 0)
+                        Window.draw(1020,310,card[hand[2]].image,0)
+                        Window.draw_font(1150, 320,card[hand[2]].name, font, {:color => C_BLACK})
                         if card[hand[2]].kind_of?(Weapon)
-                            Window.draw_font(800, 350,"攻撃力：#{card[hand[2]].attack}" , font, {:color => C_BLACK})
+                            Window.draw_font(1150, 360,"攻撃力：#{card[hand[2]].attack}" , font, {:color => C_BLACK})
                         elsif card[hand[2]].kind_of?(Armor)
-                            Window.draw_font(800, 350,"防御力：#{card[hand[2]].defence}" , font, {:color => C_BLACK})
+                            Window.draw_font(1150, 360,"防御力：#{card[hand[2]].defence}" , font, {:color => C_BLACK})
                         elsif card[hand[2]].kind_of?(Item)
-                            Window.draw_font(800, 350,"HP+#{card[hand[2]].hp}\nMP+#{card[hand[2]].mp}" , font, {:color => C_BLACK})
+                            Window.draw_font(1150, 360,"HP+#{card[hand[2]].hp}\nMP+#{card[hand[2]].mp}" , font, {:color => C_BLACK})
                         end
                     elsif x > 540 && x < 660
-                        Window.draw_box_fill(600, 300, 1000, 450, C_WHITE, 0)
-                        Window.draw(640,310,card[hand[3]].image,0)
+                        Window.draw_box_fill(1000, 300, 1350, 440, C_WHITE, 0)
+                        Window.draw(1020,310,card[hand[3]].image,0)
+                        Window.draw_font(1150, 320,card[hand[3]].name, font, {:color => C_BLACK})
                         if card[hand[3]].kind_of?(Weapon)
-                            Window.draw_font(800, 350,"攻撃力：#{card[hand[3]].attack}" , font, {:color => C_BLACK})
+                            Window.draw_font(1150, 360,"攻撃力：#{card[hand[3]].attack}" , font, {:color => C_BLACK})
                         elsif card[hand[3]].kind_of?(Armor)
-                            Window.draw_font(800, 350,"防御力：#{card[hand[3]].defence}" , font, {:color => C_BLACK})
+                            Window.draw_font(1150, 360,"防御力：#{card[hand[3]].defence}" , font, {:color => C_BLACK})
                         elsif card[hand[3]].kind_of?(Item)
-                            Window.draw_font(800, 350,"HP+#{card[hand[3]].hp}\nMP+#{card[hand[3]].mp}" , font, {:color => C_BLACK})
+                            Window.draw_font(1150, 360,"HP+#{card[hand[3]].hp}\nMP+#{card[hand[3]].mp}" , font, {:color => C_BLACK})
                         end      
                     elsif x > 690 && x < 810
-                        Window.draw_box_fill(600, 300, 1000, 450, C_WHITE, 0)
-                        Window.draw(640,310,card[hand[4]].image,0)
+                        Window.draw_box_fill(1000, 300, 1350, 440, C_WHITE, 0)
+                        Window.draw(1020,310,card[hand[4]].image,0)
+                        Window.draw_font(1150, 320,card[hand[4]].name, font, {:color => C_BLACK})
                         if card[hand[4]].kind_of?(Weapon)
-                            Window.draw_font(800, 350,"攻撃力：#{card[hand[4]].attack}" , font, {:color => C_BLACK})
+                            Window.draw_font(1150, 360,"攻撃力：#{card[hand[4]].attack}" , font, {:color => C_BLACK})
                         elsif card[hand[4]].kind_of?(Armor)
-                            Window.draw_font(800, 350,"防御力：#{card[hand[4]].defence}" , font, {:color => C_BLACK})
+                            Window.draw_font(1150, 360,"防御力：#{card[hand[4]].defence}" , font, {:color => C_BLACK})
                         elsif card[hand[4]].kind_of?(Item)
-                            Window.draw_font(800, 350,"HP+#{card[hand[4]].hp}\nMP+#{card[hand[4]].mp}" , font, {:color => C_BLACK})
+                            Window.draw_font(1150, 360,"HP+#{card[hand[4]].hp}\nMP+#{card[hand[4]].mp}" , font, {:color => C_BLACK})
                         end
                     end
                             
                 end
             
+                ###  カード選択  ###
                 if Input.mouse_push?(M_LBUTTON)
                     if y > 540 && y < 660
                         if x > 90 && x < 210
