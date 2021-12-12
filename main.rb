@@ -76,7 +76,7 @@ Window.load_resources do
                 if y > 540 && y < 660
                     if x > 90 && x < 210
                         Window.draw_box_fill(600, 300, 1000, 450, C_WHITE, 0)
-                        Window.draw_scale(400,70,card[hand[0]].image,0.2,0.2,nil,nil,0)
+                        Window.draw(640,310,card[hand[0]].image,0)
                         if card[hand[0]].kind_of?(Weapon)
                             Window.draw_font(800, 350,"攻撃力：#{card[hand[0]].attack}" , font, {:color => C_BLACK})
                         elsif card[hand[0]].kind_of?(Armor)
@@ -86,7 +86,7 @@ Window.load_resources do
                         end
                     elsif x > 240 && x < 360
                         Window.draw_box_fill(600, 300, 1000, 450, C_WHITE, 0)
-                        Window.draw_scale(400,70,card[hand[1]].image,0.2,0.2,nil,nil,0)
+                        Window.draw(640,310,card[hand[1]].image,0)
                         if card[hand[1]].kind_of?(Weapon)
                             Window.draw_font(800, 350,"攻撃力：#{card[hand[1]].attack}" , font, {:color => C_BLACK})
                         elsif card[hand[1]].kind_of?(Armor)
@@ -96,7 +96,7 @@ Window.load_resources do
                         end
                     elsif x > 390 && x < 510
                         Window.draw_box_fill(600, 300, 1000, 450, C_WHITE, 0)
-                        Window.draw_scale(400,70,card[hand[2]].image,0.2,0.2,nil,nil,0)
+                        Window.draw(640,310,card[hand[2]].image,0)
                         if card[hand[2]].kind_of?(Weapon)
                             Window.draw_font(800, 350,"攻撃力：#{card[hand[2]].attack}" , font, {:color => C_BLACK})
                         elsif card[hand[2]].kind_of?(Armor)
@@ -106,7 +106,7 @@ Window.load_resources do
                         end
                     elsif x > 540 && x < 660
                         Window.draw_box_fill(600, 300, 1000, 450, C_WHITE, 0)
-                        Window.draw_scale(400,70,card[hand[3]].image,0.2,0.2,nil,nil,0)
+                        Window.draw(640,310,card[hand[3]].image,0)
                         if card[hand[3]].kind_of?(Weapon)
                             Window.draw_font(800, 350,"攻撃力：#{card[hand[3]].attack}" , font, {:color => C_BLACK})
                         elsif card[hand[3]].kind_of?(Armor)
@@ -116,7 +116,7 @@ Window.load_resources do
                         end      
                     elsif x > 690 && x < 810
                         Window.draw_box_fill(600, 300, 1000, 450, C_WHITE, 0)
-                        Window.draw_scale(400,70,card[hand[4]].image,0.2,0.2,nil,nil,0)
+                        Window.draw(640,310,card[hand[4]].image,0)
                         if card[hand[4]].kind_of?(Weapon)
                             Window.draw_font(800, 350,"攻撃力：#{card[hand[4]].attack}" , font, {:color => C_BLACK})
                         elsif card[hand[4]].kind_of?(Armor)
@@ -221,7 +221,7 @@ Window.load_resources do
             
             #場のカードの表示
             field.each_with_index do |n,i|
-                Window.draw(240,120*i+40,card[n].image,0)
+                Window.draw(240,125*i+100,card[n].image,0)
             end
             
             #HP,MP表示
