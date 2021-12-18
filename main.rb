@@ -20,10 +20,13 @@ Image.register(:aura,'images/cold.png')
 Image.register(:waterfall,'images/heaven.png')
 
 #音声の読み込み
-Sound.register(:damage,'sounds/damage.wav')
-Sound.register(:select,'sounds/select.wav')
-Sound.register(:cancel,'sounds/cancel.wav')
+Sound.register(:damage,'sounds/damage.mp3')
+Sound.register(:select,'sounds/select.mp3')
+Sound.register(:cancel,'sounds/cancel.mp3')
 Sound.register(:heal,'sounds/heal.wav')
+Sound.register(:start,'sounds/start.mp3')
+Sound.register(:result,'sounds/result.mp3')
+Sound.register(:change,'sounds/change.mp3')
 
 Window.load_resources do
     Window.width  = 1400
@@ -87,12 +90,17 @@ Window.load_resources do
                 comhand << rand(12)
                 comhand_exist << 1
             }
-            
+            Sound[:start].play
             turn = 0
             winer = ""
+            soundflag = true
             Window.loop do
                  ###########  gamse over scene      ##########
                 if gameset
+                    if soundflag
+                        Sound[:result].play
+                        soundflag = false
+                    end
                     font1 = Font.new(150)
                     x = Input.mouse_x
                     y = Input.mouse_y
@@ -105,11 +113,13 @@ Window.load_resources do
                         if Input.mouse_push?(M_LBUTTON)
                             gamestart = true
                             gameset = false
+                            Sound[:start].play
                             break
                         end
                     end
-                else ####     game     #####
-                    Window.draw_box_fill(0, 0, 1400, 700, [128, 255, 150], 0)#背景
+                else 
+                ####     game     #####
+                Window.draw_box_fill(0, 0, 1400, 700, [128, 255, 150], 0)#背景
                 Window.draw_box(150, 100, 500, 500, C_WHITE, 0)#フィールド
                 Window.draw_box(600, 100, 950, 500, C_WHITE, 0)#フィールド
                 Window.draw_font(250, 20, "player", font, {:color => C_WHITE})
@@ -137,7 +147,7 @@ Window.load_resources do
             
                 ############     player attack     ##########
                 if turn==0
-                    Window.draw_font(500, 20, "→", font, {:color => C_WHITE})
+                Window.draw_font(500, 20, "→", font, {:color => C_WHITE})
                 
                 ###  カード選択  ###
                 if Input.mouse_push?(M_LBUTTON)
@@ -245,6 +255,7 @@ Window.load_resources do
                         end
                     
                     elsif y > 430 && y < 480 && x > 200 && x < 450 && field.size == 0#祈る　相手のターンへ
+                        Sound[:change].play
                         5.times do |n| 
                             hand[n] = rand(12)
                             hand_exist[n] = 1
@@ -319,10 +330,6 @@ Window.load_resources do
                 ############     player defense     ##########
                 elsif turn==2
                     Window.draw_font(500, 20, "←", font, {:color => C_WHITE})
-                    if field.size == 0
-                        Window.draw_box_fill(200, 430, 450, 480, C_WHITE, 0)#祈るボタン
-                        Window.draw_font(300, 435, "祈る", font, {:color => C_BLACK})
-                    end
                     ###  カード選択  ###
                     if Input.mouse_push?(M_LBUTTON)
                         if y > 540 && y < 660
@@ -420,6 +427,7 @@ Window.load_resources do
                                 if card[n].kind_of?(Item)                 #Item使用
                                     com.hp += card[n].hp
                                     com.mp += card[n].mp
+                                    Sound[:heal].play
                                 end
                             end
                             field.slice!(0,field.size) #配列を空に
