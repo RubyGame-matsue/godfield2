@@ -1,33 +1,3 @@
-Skip to content
-Search or jump to…
-Pull requests
-Issues
-Marketplace
-Explore
- 
-@j1816 
-RubyGame-matsue
-/
-godfield2
-Public
-Code
-Issues
-Pull requests
-Actions
-Projects
-Wiki
-Security
-Insights
-Settings
-godfield2/main.rb /
-@jeongjisung690
-jeongjisung690 merge
-Latest commit 1187440 16 minutes ago
- History
- 3 contributors
-@y0u-di@j1816@jeongjisung690
-560 lines (521 sloc)  27.2 KB
-   
 include DXOpal
 require 'dxopal'
 require_remote 'player.rb'
@@ -168,99 +138,114 @@ Window.load_resources do
                 ############     player attack     ##########
                 if turn==0
                     Window.draw_font(500, 20, "→", font, {:color => C_WHITE})
-                    
-                    ###  カード選択  ###
-                    if Input.mouse_push?(M_LBUTTON)
-                        if y > 540 && y < 660
-                            if x > 90 && x < 210
-                                if hand_exist[0] == 1 && !card[hand[0]].kind_of?(Armor) && field.size == 0
+                
+                ###  カード選択  ###
+                if Input.mouse_push?(M_LBUTTON)
+                    if y > 540 && y < 660
+                        if x > 90 && x < 210
+                            if hand_exist[0] == 1 && !card[hand[0]].kind_of?(Armor)
+                                if field.size ==0 || field.size ==1 && card[hand[0]].class != card[field[0]].class&& !(card[hand[0]].kind_of?(Weapon) && card[field[0]].kind_of?(Item) || card[hand[0]].kind_of?(Item) && card[field[0]].kind_of?(Weapon))
                                     Sound[:select].play
                                     field << hand[0]
                                     hand_exist[0]=0
-                                elsif hand_exist[0] == 0
-                                    Sound[:cancel].play
-                                    field.delete(hand[0])
-                                    hand_exist[0]=1
                                 end
-                            elsif x > 240 && x < 360
-                                if hand_exist[1] == 1  && !card[hand[1]].kind_of?(Armor) && field.size == 0
+                            elsif hand_exist[0] == 0
+                                Sound[:cancel].play
+                                field.delete(hand[0])
+                                hand_exist[0]=1
+                            end
+                        elsif x > 240 && x < 360
+                            if hand_exist[1] == 1  && !card[hand[1]].kind_of?(Armor)
+                                if field.size ==0 || field.size ==1 && card[hand[1]].class != card[field[0]].class&& !(card[hand[1]].kind_of?(Weapon) && card[field[0]].kind_of?(Item) || card[hand[1]].kind_of?(Item) && card[field[0]].kind_of?(Weapon))
                                     Sound[:select].play
                                     field << hand[1]
                                     hand_exist[1]=0
-                                elsif hand_exist[1] == 0
-                                    Sound[:cancel].play
-                                    field.delete(hand[1])
-                                    hand_exist[1]=1
                                 end
-                            elsif x > 390 && x < 510
-                                if hand_exist[2] == 1  && !card[hand[2]].kind_of?(Armor) && field.size == 0
+                            elsif hand_exist[1] == 0
+                                Sound[:cancel].play
+                                field.delete(hand[1])
+                                hand_exist[1]=1
+                            end
+                        elsif x > 390 && x < 510
+                            if hand_exist[2] == 1  && !card[hand[2]].kind_of?(Armor)
+                                if field.size ==0 || field.size ==1 && card[hand[2]].class != card[field[0]].class&& !(card[hand[2]].kind_of?(Weapon) && card[field[0]].kind_of?(Item) || card[hand[2]].kind_of?(Item) && card[field[0]].kind_of?(Weapon))
                                     Sound[:select].play
                                     field << hand[2]
                                     hand_exist[2]=0
-                                elsif hand_exist[2] == 0
-                                    Sound[:cancel].play
-                                    field.delete(hand[2])
-                                    hand_exist[2]=1
                                 end
-                            elsif x > 540 && x < 660
-                                if hand_exist[3] == 1  && !card[hand[3]].kind_of?(Armor) && field.size == 0
+                            elsif hand_exist[2] == 0
+                                Sound[:cancel].play
+                                field.delete(hand[2])
+                                hand_exist[2]=1
+                            end
+                        elsif x > 540 && x < 660
+                            if hand_exist[3] == 1  && !card[hand[3]].kind_of?(Armor)
+                                if field.size ==0 || field.size ==1 && card[hand[3]].class != card[field[0]].class&& !(card[hand[3]].kind_of?(Weapon) && card[field[0]].kind_of?(Item) || card[hand[3]].kind_of?(Item) && card[field[0]].kind_of?(Weapon))
                                     Sound[:select].play
                                     field << hand[3]
                                     hand_exist[3]=0
-                                elsif hand_exist[3] == 0
-                                    Sound[:cancel].play
-                                    field.delete(hand[3])
-                                    hand_exist[3]=1
                                 end
-                            elsif x > 690 && x < 810
-                                if hand_exist[4] == 1  && !card[hand[4]].kind_of?(Armor) && field.size == 0
+                            elsif hand_exist[3] == 0
+                                Sound[:cancel].play
+                                field.delete(hand[3])
+                                hand_exist[3]=1
+                            end
+                        elsif x > 690 && x < 810
+                            if hand_exist[4] == 1  && !card[hand[4]].kind_of?(Armor)
+                                if field.size ==0 || field.size ==1 && card[hand[4]].class != card[field[0]].class&& !(card[hand[4]].kind_of?(Weapon) && card[field[0]].kind_of?(Item) || card[hand[4]].kind_of?(Item) && card[field[0]].kind_of?(Weapon))
                                     Sound[:select].play
                                     field << hand[4]
                                     hand_exist[4]=0
-                                elsif hand_exist[4] == 0
-                                    Sound[:cancel].play
-                                    field.delete(hand[4])
-                                    hand_exist[4]=1
                                 end
+                            elsif hand_exist[4] == 0
+                                Sound[:cancel].play
+                                field.delete(hand[4])
+                                hand_exist[4]=1
                             end
-                        
-                        elsif y > 430 && y < 480 && x > 200 && x < 450 && field.size == 0#祈る　相手のターンへ
-                            5.times do |n| 
-                                hand[n] = rand(12)
-                                hand_exist[n] = 1
-                            end
-                            sleep 1
-                            turn=1
-                        elsif y > 100 && y < 500 && x > 150 && x < 500 && field.size > 0 #カードを使用し相手のターンへ
-                            turn=3
                         end
+                    
+                    elsif y > 430 && y < 480 && x > 200 && x < 450 && field.size == 0#祈る　相手のターンへ
+                        5.times do |n| 
+                            hand[n] = rand(12)
+                            hand_exist[n] = 1
+                        end
+                        sleep 1
+                        turn=1
+                    elsif y > 100 && y < 500 && x > 150 && x < 500 && field.size > 0 #カードを使用し相手のターンへ
+                        turn=3
                     end
+                end
                     
                     
                     
                     
                 ###############    com attack   ############
                 elsif turn==1
-                    Window.draw_font(500, 20, "←", font, {:color => C_WHITE})
-                    i=0
-                    5.times do |n| 
-                        if card[comhand[n]].kind_of?(Weapon) || card[comhand[n]].kind_of?(Item)
-                            break
+                Window.draw_font(500, 20, "←", font, {:color => C_WHITE})
+                num=0
+                5.times do |n|
+                    if card[comhand[n]].kind_of?(Magic)
+                        num+=1
+                    end
+                end
+                Window.draw_font(500, 20, "#{num}", font, {:color => C_WHITE})
+                a=rand(5)
+                if comhand_exist[a] == 1 && !card[comhand[a]].kind_of?(Armor)
+                    if comfield.size ==0
+                        Sound[:select].play
+                        comfield << comhand[a]
+                        comhand_exist[a] = 0
+                        Window.draw_font(500, 20, "#{num}", font, {:color => C_WHITE})
+                        if num == 0
+                            turn = 2
                         end
-                        i+=1
-                    end
-                    if i==5
-                        Window.draw_font(500, 300, "祈る", font, {:color => C_WHITE})
-                        sleep 2
-                        turn=0
-                    end
-                    a=rand(5)
-                    if comhand_exist[a] == 1 && comfield.size == 0  && !card[comhand[a]].kind_of?(Armor)
+                    elsif num > 0 && comfield.size ==1 && card[comhand[a]].class != card[comfield[0]].class&& !(card[comhand[a]].kind_of?(Weapon) && card[comfield[0]].kind_of?(Item) || card[comhand[a]].kind_of?(Item) && card[comfield[0]].kind_of?(Weapon))
                         Sound[:select].play
                         comfield << comhand[a]
                         comhand_exist[a] = 0
                         turn=2
                     end
+                end
                     
                     
             
@@ -460,12 +445,12 @@ Window.load_resources do
                     end
                 end
                 
-                # comhand.each_with_index do |n,i|
-                #     Window.draw(150*i+90,340,card[n].image,0)
-                #     if comhand_exist[i] == 0
-                #         Window.draw_box(150*i+90, 340, 150*i+210, 460, C_RED, 0)
-                #     end
-                # end
+                 comhand.each_with_index do |n,i|
+                     Window.draw(150*i+90,340,card[n].image,0)
+                     if comhand_exist[i] == 0
+                         Window.draw_box(150*i+90, 340, 150*i+210, 460, C_RED, 0)
+                     end
+                 end
                 
                 if field.size == 0
                     Window.draw_box_fill(200, 430, 450, 480, C_WHITE, 0)#祈るボタン
@@ -588,16 +573,3 @@ Window.load_resources do
         end
     end
 end
-© 2021 GitHub, Inc.
-Terms
-Privacy
-Security
-Status
-Docs
-Contact GitHub
-Pricing
-API
-Training
-Blog
-About
-Loading complete
