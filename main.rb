@@ -14,10 +14,10 @@ Image.register(:helmet,'images/helmet.png')
 Image.register(:chest,'images/chest.png')
 Image.register(:boots,'images/boots.png')
 Image.register(:hand,'images/hand.png')
-Image.register(:smile_water,'images/smile_water.png')
+Image.register(:book,'images/book.png')
 Image.register(:smile_flower,'images/smile_flower.png')
-Image.register(:aura,'images/cold.png')
-Image.register(:waterfall,'images/heaven.png')
+Image.register(:aura,'images/aura.png')
+Image.register(:waterfall,'images/waterfall.png')
 
 #音声の読み込み
 Sound.register(:damage,'sounds/damage.mp3')
@@ -45,10 +45,10 @@ Window.load_resources do
     card << chest = Armor.new("チェスト",6,0,Image[:chest])                     #6
     card << boots = Armor.new("ブーツ",4,0,Image[:boots])                       #7
     card << hand = Armor.new("小手",2,0,Image[:hand])                           #8
-    card << smile_water = Item.new("スマイルの水",5,0,Image[:smile_water])      #9
-    card << smile_flower = Item.new("スマイルの花",0,5,Image[:smile_flower])    #10
+    card << book = Item.new("呪文",0,5,Image[:book])                            #9
+    card << smile_flower = Item.new("スマイルの花",5,0,Image[:smile_flower])    #10
     card << aura = Magic.new("オーラ",10,1,Image[:aura])                        #11
-    card << waterfall = Magic.new("滝",15,2,Image[:waterfall])                  #12
+    card << waterfall = Magic.new("滝",15,2,Image[:waterfall]) 
     gamestart = true
     gameset = false
     Window.loop do
@@ -59,19 +59,19 @@ Window.load_resources do
             x = Input.mouse_x
             y = Input.mouse_y
             Window.draw_box_fill(0, 0, 1400, 700, [180, 250, 200])#背景
-            Window.draw_font(100, 200, "BUDFIELD", font1, {:color => [240,130,200]})
-            Window.draw_box_fill(300, 500, 500, 620, C_WHITE, 0) 
-            Window.draw_font(350, 550, "生誕する", font, {:color => C_BLACK})  
-            if x>300 && x<500 && y>500 && y<620
+            Window.draw_font(300, 200, "BUDFIELD", font1, {:color => [240,130,200]})
+            Window.draw_box_fill(550, 500, 750, 620, C_WHITE, 0) 
+            Window.draw_font(590, 550, "生誕する", font, {:color => C_BLACK})  
+            if x>550 && x<750 && y>500 && y<620
                 if Input.mouse_push?(M_LBUTTON)
                     gamestart = false
                 end
             end
         else
 
-            player.hp=20
+            player.hp=30
             player.mp=10
-            com.hp=20
+            com.hp=30
             com.mp=10
 
             hand=[]
@@ -122,10 +122,10 @@ Window.load_resources do
                 Window.draw_box_fill(0, 0, 1400, 700, [128, 255, 150], 0)#背景
                 Window.draw_box(150, 100, 500, 500, C_WHITE, 0)#フィールド
                 Window.draw_box(600, 100, 950, 500, C_WHITE, 0)#フィールド
-                Window.draw_font(250, 20, "player", font, {:color => C_WHITE})
-                Window.draw_font(700, 20, "com", font, {:color => C_WHITE})
-                Window.draw_font(1000, 20, "player hp:#{player.hp} mp:#{player.mp}", font, {:color => C_WHITE})
-                Window.draw_font(1000, 120, "com hp:#{com.hp} mp:#{com.mp}", font, {:color => C_WHITE})
+                Window.draw_font(250, 20, "PLAYER", font, {:color => C_BLACK})
+                Window.draw_font(700, 20, "COM", font, {:color => C_BLACK})
+                Window.draw_font(1000, 20, "PLAYER HP:#{player.hp} MP:#{player.mp}", font, {:color => C_BLACK})
+                Window.draw_font(1000, 120, "COM HP:#{com.hp} MP:#{com.mp}", font, {:color => C_BLACK})
 
                 if player.hp<=0 || com.hp<=0 
                     if player.hp<=0
@@ -147,7 +147,7 @@ Window.load_resources do
             
                 ############     player attack     ##########
                 if turn==0
-                Window.draw_font(500, 20, "→", font, {:color => C_WHITE})
+                Window.draw_font(500, 20, "→", font, {:color => C_BLACK})
                 
                 ###  カード選択  ###
                 if Input.mouse_push?(M_LBUTTON)
@@ -272,7 +272,7 @@ Window.load_resources do
                     
                 ###############    com attack   ############
                 elsif turn==1
-                Window.draw_font(500, 20, "←", font, {:color => C_WHITE})
+                Window.draw_font(500, 20, "←", font, {:color => C_BLACK})
                 num=0
                 5.times do |n|
                     if card[comhand[n]].kind_of?(Magic)
@@ -329,7 +329,7 @@ Window.load_resources do
                     
                 ############     player defense     ##########
                 elsif turn==2
-                    Window.draw_font(500, 20, "←", font, {:color => C_WHITE})
+                    Window.draw_font(500, 20, "←", font, {:color => C_BLACK})
                     ###  カード選択  ###
                     if Input.mouse_push?(M_LBUTTON)
                         if y > 540 && y < 660
@@ -416,11 +416,12 @@ Window.load_resources do
                             if attack-defence > 0
                                 Sound[:damage].play
                                 player.hp -= attack-defence
-                                Window.draw_font(1200, 500, "#{attack-defence}ダメージ!!!", font, {:color => C_WHITE})
-                            elsif magic > 0
+                                Window.draw_font(1200, 500, "#{attack-defence}ダメージ!!!", font, {:color => C_RED})
+                            end
+                            if magic > 0
                                 Sound[:damage].play
                                 player.hp -= magic
-                                Window.draw_font(1200, 500, "#{magic}ダメージ!!!", font, {:color => C_WHITE})
+                                Window.draw_font(1200, 500, "#{magic}ダメージ!!!", font, {:color => C_RED})
                             end
                             
                             comfield.each do |n|                          
@@ -456,7 +457,7 @@ Window.load_resources do
                     
                 ###############    com defence   ############
                 elsif turn==3
-                    Window.draw_font(500, 20, "→", font, {:color => C_WHITE})
+                    Window.draw_font(500, 20, "→", font, {:color => C_BLACK})
                     
                     a=rand(5)
                     if comhand_exist[a] == 1 && comfield.size < 2 && card[comhand[a]].kind_of?(Armor)
@@ -493,15 +494,17 @@ Window.load_resources do
                     end
                             
                     if attack-defence > 0
-                        Window.draw_font(1200, 500, "#{attack-defence}ダメージ!!!", font, {:color => C_WHITE}) 
-                    elsif magic > 0
-                        Window.draw_font(1200, 500, "#{magic}ダメージ!!!", font, {:color => C_WHITE})
+                        Window.draw_font(1200, 500, "#{attack-defence}ダメージ!!!", font, {:color => C_RED}) 
+                    end
+                    if magic > 0
+                        Window.draw_font(1200, 500, "#{magic}ダメージ!!!", font, {:color => C_RED})
                     end
                     if Input.mouse_push?(M_LBUTTON) #playerのターンへ
                         if attack-defence > 0
                             Sound[:damage].play
                             com.hp -= attack-defence
-                        elsif magic > 0
+                        end
+                        if magic > 0
                             Sound[:damage].play
                             com.hp -= magic
                         end
@@ -557,19 +560,13 @@ Window.load_resources do
                     end
                 end
                 
-                #  comhand.each_with_index do |n,i|
-                #      Window.draw(150*i+90,340,card[n].image,0)
-                #      if comhand_exist[i] == 0
-                #          Window.draw_box(150*i+90, 340, 150*i+210, 460, C_RED, 0)
-                #      end
-                #  end
                 
                 if field.size == 0
                     Window.draw_box_fill(200, 430, 450, 480, C_WHITE, 0)#祈るボタン
                     if(turn == 2)
-                        Window.draw_font(300, 435, "許す", font, {:color => C_BLACK})
+                        Window.draw_font(300, 445, "許す", font, {:color => C_BLACK})
                     else
-                        Window.draw_font(300, 435, "祈る", font, {:color => C_BLACK})
+                        Window.draw_font(300, 445, "祈る", font, {:color => C_BLACK})
                     end
                 end
                 #カードステータスの表示
@@ -584,6 +581,14 @@ Window.load_resources do
                             Window.draw_font(1150, 360,"防御力：#{card[hand[0]].defence}" , font, {:color => C_BLACK})
                         elsif card[hand[0]].kind_of?(Item)
                             Window.draw_font(1150, 360,"HP+#{card[hand[0]].hp}\nMP+#{card[hand[0]].mp}" , font, {:color => C_BLACK})
+                        elsif card[hand[0]].kind_of?(Magic)
+                            if card[hand[0]].type==1
+                                Window.draw_font(1150, 360,"消費MP：#{card[hand[0]].mp}" , font, {:color => C_BLACK})
+                                Window.draw_font(1150, 400,"攻撃力 2倍" , font, {:color => C_BLACK})
+                            elsif card[hand[0]].type==2
+                                Window.draw_font(1150, 360,"消費MP：#{card[hand[0]].mp}" , font, {:color => C_BLACK})
+                                Window.draw_font(1150, 400,"20ダメージ" , font, {:color => C_BLACK})
+                            end
                         end
                     elsif x > 240 && x < 360
                         Window.draw_box_fill(1000, 300, 1350, 440, C_WHITE, 0)
@@ -595,6 +600,14 @@ Window.load_resources do
                             Window.draw_font(1150, 360,"防御力：#{card[hand[1]].defence}" , font, {:color => C_BLACK})
                         elsif card[hand[1]].kind_of?(Item)
                             Window.draw_font(1150, 360,"HP+#{card[hand[1]].hp}\nMP+#{card[hand[1]].mp}" , font, {:color => C_BLACK})
+                        elsif card[hand[1]].kind_of?(Magic)
+                            if card[hand[1]].type==1
+                                Window.draw_font(1150, 360,"消費MP：#{card[hand[1]].mp}" , font, {:color => C_BLACK})
+                                Window.draw_font(1150, 400,"攻撃力 2倍" , font, {:color => C_BLACK})
+                            elsif card[hand[1]].type==2
+                                Window.draw_font(1150, 360,"消費MP：#{card[hand[1]].mp}" , font, {:color => C_BLACK})
+                                Window.draw_font(1150, 400,"20ダメージ" , font, {:color => C_BLACK})
+                            end
                         end
                     elsif x > 390 && x < 510
                         Window.draw_box_fill(1000, 300, 1350, 440, C_WHITE, 0)
@@ -606,6 +619,14 @@ Window.load_resources do
                             Window.draw_font(1150, 360,"防御力：#{card[hand[2]].defence}" , font, {:color => C_BLACK})
                         elsif card[hand[2]].kind_of?(Item)
                             Window.draw_font(1150, 360,"HP+#{card[hand[2]].hp}\nMP+#{card[hand[2]].mp}" , font, {:color => C_BLACK})
+                        elsif card[hand[2]].kind_of?(Magic)
+                            if card[hand[2]].type==1
+                                Window.draw_font(1150, 360,"消費MP：#{card[hand[2]].mp}" , font, {:color => C_BLACK})
+                                Window.draw_font(1150, 400,"攻撃力 2倍" , font, {:color => C_BLACK})
+                            elsif card[hand[2]].type==2
+                                Window.draw_font(1150, 360,"消費MP：#{card[hand[2]].mp}" , font, {:color => C_BLACK})
+                                Window.draw_font(1150, 400,"20ダメージ" , font, {:color => C_BLACK})
+                            end
                         end
                     elsif x > 540 && x < 660
                         Window.draw_box_fill(1000, 300, 1350, 440, C_WHITE, 0)
@@ -617,6 +638,14 @@ Window.load_resources do
                             Window.draw_font(1150, 360,"防御力：#{card[hand[3]].defence}" , font, {:color => C_BLACK})
                         elsif card[hand[3]].kind_of?(Item)
                             Window.draw_font(1150, 360,"HP+#{card[hand[3]].hp}\nMP+#{card[hand[3]].mp}" , font, {:color => C_BLACK})
+                        elsif card[hand[3]].kind_of?(Magic)
+                            if card[hand[3]].type==1
+                                Window.draw_font(1150, 360,"消費MP：#{card[hand[3]].mp}" , font, {:color => C_BLACK})
+                                Window.draw_font(1150, 400,"攻撃力 2倍" , font, {:color => C_BLACK})
+                            elsif card[hand[3]].type==2
+                                Window.draw_font(1150, 360,"消費MP：#{card[hand[3]].mp}" , font, {:color => C_BLACK})
+                                Window.draw_font(1150, 400,"20ダメージ" , font, {:color => C_BLACK})
+                            end
                         end      
                     elsif x > 690 && x < 810
                         Window.draw_box_fill(1000, 300, 1350, 440, C_WHITE, 0)
@@ -628,6 +657,14 @@ Window.load_resources do
                             Window.draw_font(1150, 360,"防御力：#{card[hand[4]].defence}" , font, {:color => C_BLACK})
                         elsif card[hand[4]].kind_of?(Item)
                             Window.draw_font(1150, 360,"HP+#{card[hand[4]].hp}\nMP+#{card[hand[4]].mp}" , font, {:color => C_BLACK})
+                        elsif card[hand[4]].kind_of?(Magic)
+                            if card[hand[4]].type==1
+                                Window.draw_font(1150, 360,"消費MP：#{card[hand[4]].mp}" , font, {:color => C_BLACK})
+                                Window.draw_font(1150, 400,"攻撃力 2倍" , font, {:color => C_BLACK})
+                            elsif card[hand[4]].type==2
+                                Window.draw_font(1150, 360,"消費MP：#{card[hand[4]].mp}" , font, {:color => C_BLACK})
+                                Window.draw_font(1150, 400,"20ダメージ" , font, {:color => C_BLACK})
+                            end
                         end
                     end
                 end
@@ -653,6 +690,12 @@ Window.load_resources do
                         Window.draw_font(260, 435, "防：#{defence}", font, {:color => C_BLACK})
                     elsif card[n].kind_of?(Item)
                         Window.draw_font(225, 435, "HP：#{hp},MP：#{mp}", font, {:color => C_BLACK})
+                    elsif card[n].kind_of?(Magic)
+                        if card[n].type==1
+                            Window.draw_font(260, 435,"攻撃力 2倍", font, {:color => C_BLACK})
+                        elsif card[n].type==2
+                            Window.draw_font(260, 435,"20ダメージ", font, {:color => C_BLACK})
+                        end
                     end
                 end
                 
@@ -677,8 +720,15 @@ Window.load_resources do
                         Window.draw_font(750, 435, "防：#{defence}", font, {:color => C_BLACK})
                     elsif card[n].kind_of?(Item)
                         Window.draw_font(750, 435, "HP：#{hp},MP：#{mp}", font, {:color => C_BLACK})
+                    elsif card[n].kind_of?(Magic)
+                        if card[n].type==1
+                                Window.draw_font(750, 435,"攻撃力 2倍", font, {:color => C_BLACK})
+                        elsif card[n].type==2
+                                Window.draw_font(750, 435,"20ダメージ", font, {:color => C_BLACK})
+                        end
                     end
                 end
+            
             end
 
             end
