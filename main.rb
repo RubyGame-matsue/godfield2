@@ -450,12 +450,12 @@ Window.load_resources do
                     end
                 end
                 
-                 comhand.each_with_index do |n,i|
-                     Window.draw(150*i+90,340,card[n].image,0)
-                     if comhand_exist[i] == 0
-                         Window.draw_box(150*i+90, 340, 150*i+210, 460, C_RED, 0)
-                     end
-                 end
+                #  comhand.each_with_index do |n,i|
+                #      Window.draw(150*i+90,340,card[n].image,0)
+                #      if comhand_exist[i] == 0
+                #          Window.draw_box(150*i+90, 340, 150*i+210, 460, C_RED, 0)
+                #      end
+                #  end
                 
                 if field.size == 0
                     Window.draw_box_fill(200, 430, 450, 480, C_WHITE, 0)#祈るボタン
