@@ -14,7 +14,7 @@ class Armor < Sprite
     attr_accessor :name,:defence,:attribute
     def initialize(name,defence,attribute,img)
         @name = name
-        @adefence = defence
+        @defence = defence
         @attribute = attribute
         x = 0
         y = 0
@@ -36,4 +36,13 @@ class Item < Sprite
     end
 end
 
-
+class Magic < Sprite
+    attr_accessor :name,:mp,:type
+    def initialize(name,mp,type,img)
+        @name = name
+        @mp = mp
+        @type = type
+        image = img
+        super(0,0,image)
+    end
+end
