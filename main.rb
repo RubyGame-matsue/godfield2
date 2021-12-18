@@ -22,6 +22,10 @@ Image.register(:heaven,'images/heaven.png')
 #音声の読み込み
 Sound.register(:damage,'sounds/damage.wav')
 Sound.register(:select,'sounds/select.wav')
+Sound.register(:cancel,'sounds/cancel.wav')
+Sound.register(:heal,'sounds/heal.wav')
+
+#Sound.register(:get,'sounds/get.wav')
 def show (p_hp,p_mp,c_hp,c_mp)
     Window.draw_box_fill(0, 0, 1400, 700, C_GREEN, 0)#背景
     Window.draw_box(150, 100, 500, 500, C_WHITE, 0)#フィールド
@@ -38,7 +42,6 @@ Window.load_resources do
     player=Player.new()
     com=Com.new()
     font = Font.new(32)
-
     card=[]
 
     #カードの登録
@@ -55,6 +58,7 @@ Window.load_resources do
     card << cold = Magic.new("風邪",6,1,Image[:cold])                          #11
     card << heaven = Magic.new("天国病",15,4,Image[:heaven])                    #12
     gamestart = false
+    soundflag = true
     Window.loop do
        #スタート画面
         if gamestart == false
@@ -68,7 +72,6 @@ Window.load_resources do
             Window.draw_font(350, 550, "START", font, {:color => C_BLACK}) 
             if x>300 && x<500 && y>500 && y<620
                 if Input.mouse_push?(M_LBUTTON)
-                    Sound[:damage].play
                     gamestart = true
                 end
             end
@@ -127,41 +130,51 @@ Window.load_resources do
                     if y > 540 && y < 660
                         if x > 90 && x < 210
                             if hand_exist[0] == 1 && !card[hand[0]].kind_of?(Armor) && field.size == 0
+                                Sound[:select].play
                                 field << hand[0]
                                 hand_exist[0]=0
                             elsif hand_exist[0] == 0
+                                Sound[:cancel].play
                                 field.delete(hand[0])
                                 hand_exist[0]=1
                             end
                         elsif x > 240 && x < 360
                             if hand_exist[1] == 1  && !card[hand[1]].kind_of?(Armor) && field.size == 0
+                                Sound[:select].play
                                 field << hand[1]
                                 hand_exist[1]=0
                             elsif hand_exist[1] == 0
+                                Sound[:cancel].play
                                 field.delete(hand[1])
                                 hand_exist[1]=1
                             end
                         elsif x > 390 && x < 510
                             if hand_exist[2] == 1  && !card[hand[2]].kind_of?(Armor) && field.size == 0
+                                Sound[:select].play
                                 field << hand[2]
                                 hand_exist[2]=0
                             elsif hand_exist[2] == 0
+                                Sound[:cancel].play
                                 field.delete(hand[2])
                                 hand_exist[2]=1
                             end
                         elsif x > 540 && x < 660
                             if hand_exist[3] == 1  && !card[hand[3]].kind_of?(Armor) && field.size == 0
+                                Sound[:select].play
                                 field << hand[3]
                                 hand_exist[3]=0
                             elsif hand_exist[3] == 0
+                                Sound[:cancel].play
                                 field.delete(hand[3])
                                 hand_exist[3]=1
                             end
                         elsif x > 690 && x < 810
                             if hand_exist[4] == 1  && !card[hand[4]].kind_of?(Armor) && field.size == 0
+                                Sound[:select].play
                                 field << hand[4]
                                 hand_exist[4]=0
                             elsif hand_exist[4] == 0
+                                Sound[:cancel].play
                                 field.delete(hand[4])
                                 hand_exist[4]=1
                             end
@@ -191,6 +204,7 @@ Window.load_resources do
                 end
                 a=rand(5)
                 if comhand_exist[a] == 1 && comfield.size == 0  && !card[comhand[a]].kind_of?(Armor)
+                    Sound[:select].play
                     comfield << comhand[a]
                     comhand_exist[a] = 0
                     turn=2
@@ -222,6 +236,7 @@ Window.load_resources do
                             if card[n].kind_of?(Item)                 #Item使用
                                 com.hp += card[n].hp
                                 com.mp += card[n].mp
+                                Sound[:heal].play
                             end
                         end
                     comfield.slice!(0,comfield.size) #配列を空に
@@ -232,41 +247,51 @@ Window.load_resources do
                     if y > 540 && y < 660
                         if x > 90 && x < 210
                             if hand_exist[0] == 1  && card[hand[0]].kind_of?(Armor)
+                                Sound[:select].play
                                 field << hand[0]
                                 hand_exist[0]=0
                             elsif hand_exist[0] == 0
+                                Sound[:cancel].play
                                 field.delete(hand[0])
                                 hand_exist[0]=1
                             end
                         elsif x > 240 && x < 360
                             if hand_exist[1] == 1  && card[hand[1]].kind_of?(Armor)
+                                Sound[:select].play
                                 field << hand[1]
                                 hand_exist[1]=0
                             elsif hand_exist[1] == 0
+                                Sound[:cancel].play
                                 field.delete(hand[1])
                                 hand_exist[1]=1
                             end
                         elsif x > 390 && x < 510
                             if hand_exist[2] == 1  && card[hand[2]].kind_of?(Armor)
+                                Sound[:select].play
                                 field << hand[2]
                                 hand_exist[2]=0
                             elsif hand_exist[2] == 0
+                                Sound[:cancel].play
                                 field.delete(hand[2])
                                 hand_exist[2]=1
                             end
                         elsif x > 540 && x < 660
                             if hand_exist[3] == 1  && card[hand[3]].kind_of?(Armor)
+                                Sound[:select].play
                                 field << hand[3]
                                 hand_exist[3]=0
                             elsif hand_exist[3] == 0
+                                Sound[:cancel].play
                                 field.delete(hand[3])
                                 hand_exist[3]=1
                             end
                         elsif x > 690 && x < 810
                             if hand_exist[4] == 1  && card[hand[4]].kind_of?(Armor)
+                                Sound[:select].play
                                 field << hand[4]
                                 hand_exist[4]=0
                             elsif hand_exist[4] == 0
+                                Sound[:cancel].play
                                 field.delete(hand[4])
                                 hand_exist[4]=1
                             end
@@ -286,6 +311,7 @@ Window.load_resources do
                             end
                         end
                         if attack-defence > 0
+                            Sound[:damage].play
                             player.hp -= attack-defence
                         end
                         
@@ -322,6 +348,7 @@ Window.load_resources do
                 
                 a=rand(5)
                 if comhand_exist[a] == 1 && comfield.size < 2 && card[comhand[a]].kind_of?(Armor)
+                    Sound[:select].play
                     comfield << comhand[a]
                     comhand_exist[a] = 0
                 end
@@ -340,6 +367,7 @@ Window.load_resources do
                         end
                     end
                     if attack-defence > 0
+                        Sound[:damage].play
                         com.hp -= attack-defence
                     end
                     
@@ -347,6 +375,7 @@ Window.load_resources do
                         if card[n].kind_of?(Item)                 #Item使用
                             player.hp += card[n].hp
                             player.mp += card[n].mp
+                            Sound[:heal].play
                         end
                     end
                         
@@ -401,7 +430,6 @@ Window.load_resources do
             #カードステータスの表示
             if y > 540 && y < 660
                 if x > 90 && x < 210
-                    Sound[:select].play
                     Window.draw_box_fill(1000, 300, 1350, 440, C_WHITE, 0)
                     Window.draw(1020,310,card[hand[0]].image,0)
                     Window.draw_font(1150, 320,card[hand[0]].name, font, {:color => C_BLACK})
@@ -413,7 +441,6 @@ Window.load_resources do
                         Window.draw_font(1150, 360,"HP+#{card[hand[0]].hp}\nMP+#{card[hand[0]].mp}" , font, {:color => C_BLACK})
                     end
                 elsif x > 240 && x < 360
-                    Sound[:select].play
                     Window.draw_box_fill(1000, 300, 1350, 440, C_WHITE, 0)
                     Window.draw(1020,310,card[hand[1]].image,0)
                     Window.draw_font(1150, 320,card[hand[1]].name, font, {:color => C_BLACK})
@@ -425,7 +452,6 @@ Window.load_resources do
                         Window.draw_font(1150, 360,"HP+#{card[hand[1]].hp}\nMP+#{card[hand[1]].mp}" , font, {:color => C_BLACK})
                     end
                 elsif x > 390 && x < 510
-                    Sound[:select].play
                     Window.draw_box_fill(1000, 300, 1350, 440, C_WHITE, 0)
                     Window.draw(1020,310,card[hand[2]].image,0)
                     Window.draw_font(1150, 320,card[hand[2]].name, font, {:color => C_BLACK})
@@ -437,7 +463,6 @@ Window.load_resources do
                         Window.draw_font(1150, 360,"HP+#{card[hand[2]].hp}\nMP+#{card[hand[2]].mp}" , font, {:color => C_BLACK})
                     end
                 elsif x > 540 && x < 660
-                    Sound[:select].play
                     Window.draw_box_fill(1000, 300, 1350, 440, C_WHITE, 0)
                     Window.draw(1020,310,card[hand[3]].image,0)
                     Window.draw_font(1150, 320,card[hand[3]].name, font, {:color => C_BLACK})
@@ -449,7 +474,6 @@ Window.load_resources do
                         Window.draw_font(1150, 360,"HP+#{card[hand[3]].hp}\nMP+#{card[hand[3]].mp}" , font, {:color => C_BLACK})
                     end      
                 elsif x > 690 && x < 810
-                    Sound[:select].play
                     Window.draw_box_fill(1000, 300, 1350, 440, C_WHITE, 0)
                     Window.draw(1020,310,card[hand[4]].image,0)
                     Window.draw_font(1150, 320,card[hand[4]].name, font, {:color => C_BLACK})
@@ -461,11 +485,11 @@ Window.load_resources do
                         Window.draw_font(1150, 360,"HP+#{card[hand[4]].hp}\nMP+#{card[hand[4]].mp}" , font, {:color => C_BLACK})
                     end
                 end
-                        
             end
-            
             attack = 0
             defence =0
+            hp = 0
+            mp = 0
             #場のカードの表示
             field.each_with_index do |n,i|
                 Window.draw(240,125*i+100,card[n].image,0)
@@ -473,22 +497,42 @@ Window.load_resources do
                     attack += card[n].attack
                 elsif card[n].kind_of?(Armor)
                     defence += card[n].defence
+                elsif card[n].kind_of?(Item)
+                    hp += card[n].hp
+                    mp += card[n].mp
                 end
-                Window.draw_box_fill(200, 430, 450, 480, C_WHITE, 0)#祈るボタン
-                Window.draw_font(250, 435, "攻：#{attack} 防：#{defence}", font, {:color => C_BLACK})
+                Window.draw_box_fill(200, 430, 450, 480, C_WHITE, 0)
+                if card[n].kind_of?(Weapon)
+                    Window.draw_font(260, 435, "攻：#{attack}", font, {:color => C_BLACK})
+                elsif card[n].kind_of?(Armor)
+                    Window.draw_font(260, 435, "防：#{defence}", font, {:color => C_BLACK})
+                elsif card[n].kind_of?(Item)
+                    Window.draw_font(225, 435, "HP：#{hp},MP：#{mp}", font, {:color => C_BLACK})
+                end
             end
             
             attack = 0
             defence = 0
+            hp = 0
+            mp = 0
             comfield.each_with_index do |n,i|
                 Window.draw(740,125*i+100,card[n].image,0)
                 if card[n].kind_of?(Weapon)
                     attack += card[n].attack
                 elsif card[n].kind_of?(Armor)
                     defence += card[n].defence
+                elsif card[n].kind_of?(Item)
+                    hp += card[n].hp
+                    mp += card[n].mp
                 end
                 Window.draw_box_fill(700, 430, 950, 480, C_WHITE, 0)#祈るボタン
-                Window.draw_font(750, 435, "攻：#{attack} 防：#{defence}", font, {:color => C_BLACK})
+                if card[n].kind_of?(Weapon)
+                    Window.draw_font(750, 435, "攻：#{attack}", font, {:color => C_BLACK})
+                elsif card[n].kind_of?(Armor)
+                    Window.draw_font(750, 435, "防：#{defence}", font, {:color => C_BLACK})
+                elsif card[n].kind_of?(Item)
+                    Window.draw_font(750, 435, "HP：#{hp},MP：#{mp}", font, {:color => C_BLACK})
+                end
             end
             
             
