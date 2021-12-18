@@ -16,25 +16,14 @@ Image.register(:boots,'images/boots.png')
 Image.register(:hand,'images/hand.png')
 Image.register(:smile_water,'images/smile_water.png')
 Image.register(:smile_flower,'images/smile_flower.png')
-Image.register(:cold,'images/cold.png')
-Image.register(:heaven,'images/heaven.png')
+Image.register(:aura,'images/cold.png')
+Image.register(:wall,'images/heaven.png')
 
 #音声の読み込み
 Sound.register(:damage,'sounds/damage.wav')
 Sound.register(:select,'sounds/select.wav')
 Sound.register(:cancel,'sounds/cancel.wav')
 Sound.register(:heal,'sounds/heal.wav')
-
-#Sound.register(:get,'sounds/get.wav')
-def show (p_hp,p_mp,c_hp,c_mp)
-    Window.draw_box_fill(0, 0, 1400, 700, C_GREEN, 0)#背景
-    Window.draw_box(150, 100, 500, 500, C_WHITE, 0)#フィールド
-    Window.draw_box(600, 100, 950, 500, C_WHITE, 0)#フィールド
-    Window.draw_font(250, 20, "player", font, {:color => C_WHITE})
-    Window.draw_font(700, 20, "com", font, {:color => C_WHITE})
-    Window.draw_font(1000, 20, "player hp:#{p_hp} mp:#{p_mp}", font, {:color => C_WHITE})
-    Window.draw_font(1000, 120, "com hp:#{c_hp} mp:#{c_mp}", font, {:color => C_WHITE})
-end
 
 Window.load_resources do
     Window.width  = 1400
@@ -55,8 +44,8 @@ Window.load_resources do
     card << hand = Armor.new("小手",2,0,Image[:hand])                           #8
     card << smile_water = Item.new("スマイルの水",5,0,Image[:smile_water])      #9
     card << smile_flower = Item.new("スマイルの花",0,5,Image[:smile_flower])    #10
-    card << cold = Magic.new("風邪",6,1,Image[:cold])                          #11
-    card << heaven = Magic.new("天国病",15,4,Image[:heaven])                    #12
+    card << aura = Magic.new("オーラ",10,1,Image[:aura])                        #11
+    card << wall = Magic.new("壁",5,4,Image[:wall])                             #12
     gamestart = false
     soundflag = true
     Window.loop do
@@ -181,7 +170,12 @@ Window.load_resources do
                         end
                     
                     elsif y > 430 && y < 480 && x > 200 && x < 450 && field.size == 0#祈る　相手のターンへ
-                        turn=3
+                        5.times do |n| 
+                            hand[n] = rand(12)
+                            hand_exist[n] = 1
+                        end
+                        sleep 1
+                        turn=1
                     elsif y > 100 && y < 500 && x > 150 && x < 500 && field.size > 0 #カードを使用し相手のターンへ
                         turn=3
                     end
@@ -193,11 +187,14 @@ Window.load_resources do
             ###############    com attack   ############
             elsif turn==1
                 Window.draw_font(500, 20, "←", font, {:color => C_WHITE})
-                
+                i=0
                 5.times do |n| 
                     if card[comhand[n]].kind_of?(Weapon) || card[comhand[n]].kind_of?(Item)
                         break
                     end
+                    i+=1
+                end
+                if i==5
                     Window.draw_font(500, 300, "祈る", font, {:color => C_WHITE})
                     sleep 2
                     turn=0
@@ -221,27 +218,6 @@ Window.load_resources do
                     Window.draw_box_fill(200, 430, 450, 480, C_WHITE, 0)#祈るボタン
                     Window.draw_font(300, 435, "祈る", font, {:color => C_BLACK})
                 end
-                
-                comfield.each do |n|                          
-                    if card[n].kind_of?(Item)                 #Itemだけならスキップ
-                        sleep 1
-                        turn=0
-                    elsif
-                        turn=2
-                        break
-                    end
-                end
-                if turn ==0
-                    comfield.each do |n|                          
-                            if card[n].kind_of?(Item)                 #Item使用
-                                com.hp += card[n].hp
-                                com.mp += card[n].mp
-                                Sound[:heal].play
-                            end
-                        end
-                    comfield.slice!(0,comfield.size) #配列を空に
-                end
-            
                 ###  カード選択  ###
                 if Input.mouse_push?(M_LBUTTON)
                     if y > 540 && y < 660
@@ -303,6 +279,9 @@ Window.load_resources do
                             if card[n].kind_of?(Weapon)               #Weapon使用
                                 attack += card[n].attack
                             end
+                            if card[n].kind_of?(Magic)               #Magic使用
+                                
+                            end
                         end
                         defence=0
                         field.each do |n|
@@ -313,6 +292,7 @@ Window.load_resources do
                         if attack-defence > 0
                             Sound[:damage].play
                             player.hp -= attack-defence
+                            Window.draw_font(1200, 500, "#{attack-defence}ダメージ!!!", font, {:color => C_WHITE})
                         end
                         
                         comfield.each do |n|                          
@@ -326,17 +306,20 @@ Window.load_resources do
                         #足りない枚数手札を増やす
                         hand.each_with_index do |n,i|
                             if hand_exist[i] == 0
-                                hand[i]=rand(10)
+                                hand[i]=rand(12)
                                 hand_exist[i]=1
                             end
                         end
                         comhand.each_with_index do |n,i|
                         if comhand_exist[i] == 0
-                            comhand[i]=rand(10)
-                            comhand_exist[i]=1
+                                comhand[i]=rand(12)
+                                comhand_exist[i]=1
+                            end
                         end
-                    end
-                        turn=0
+                        if Input.mouse_release?(M_LBUTTON)
+                            sleep 1
+                            turn=0
+                        end
                     end
                 end
                 
@@ -352,20 +335,22 @@ Window.load_resources do
                     comfield << comhand[a]
                     comhand_exist[a] = 0
                 end
-                
+                attack=0
+                field.each do |n|
+                    if card[n].kind_of?(Weapon)             #Weapon使用
+                        attack += card[n].attack
+                    end
+                end
+                defence=0
+                comfield.each do |n|
+                    if card[n].kind_of?(Armor)              #Armor使用
+                        defence += card[n].defence
+                    end
+                end
+                if attack-defence > 0
+                    Window.draw_font(1200, 500, "#{attack-defence}ダメージ!!!", font, {:color => C_WHITE}) 
+                end
                 if Input.mouse_push?(M_LBUTTON) #playerのターンへ
-                    attack=0
-                    field.each do |n|
-                        if card[n].kind_of?(Weapon)             #Weapon使用
-                            attack += card[n].attack
-                        end
-                    end
-                    defence=0
-                    comfield.each do |n|
-                        if card[n].kind_of?(Armor)              #Armor使用
-                            defence += card[n].defence
-                        end
-                    end
                     if attack-defence > 0
                         Sound[:damage].play
                         com.hp -= attack-defence
@@ -384,16 +369,17 @@ Window.load_resources do
                     #足りない枚数手札を増やす
                     hand.each_with_index do |n,i|
                         if hand_exist[i] == 0
-                            hand[i]=rand(10)
+                            hand[i]=rand(12)
                             hand_exist[i]=1
                         end
                     end
                     comhand.each_with_index do |n,i|
                         if comhand_exist[i] == 0
-                            comhand[i]=rand(10)
+                            comhand[i]=rand(12)
                             comhand_exist[i]=1
                         end
                     end
+                    
                     turn=1
                 end 
             end
@@ -418,6 +404,13 @@ Window.load_resources do
                     end
                 end
             end
+            
+            # comhand.each_with_index do |n,i|
+            #     Window.draw(150*i+90,340,card[n].image,0)
+            #     if comhand_exist[i] == 0
+            #         Window.draw_box(150*i+90, 340, 150*i+210, 460, C_RED, 0)
+            #     end
+            # end
             
             if field.size == 0
                 Window.draw_box_fill(200, 430, 450, 480, C_WHITE, 0)#祈るボタン
@@ -534,11 +527,6 @@ Window.load_resources do
                     Window.draw_font(750, 435, "HP：#{hp},MP：#{mp}", font, {:color => C_BLACK})
                 end
             end
-            
-            
-            #HP,MP表示
-            Window.draw_font(1000, 20, "player hp:#{player.hp} mp:#{player.mp}", font, {:color => C_WHITE})
-            Window.draw_font(1000, 120, "com hp:#{com.hp} mp:#{com.mp}", font, {:color => C_WHITE})
 
         end
     end
