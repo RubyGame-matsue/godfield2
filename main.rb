@@ -19,6 +19,10 @@ Image.register(:smile_flower,'images/smile_flower.png')
 Image.register(:cold,'images/cold.png')
 Image.register(:heaven,'images/heaven.png')
 
+#音声の読み込み
+Sound.register(:damage,'sounds/damage.wav')
+Sound.register(:select,'sounds/select.wav')
+
 Window.load_resources do
     Window.width  = 1400
     Window.height = 700
@@ -50,11 +54,12 @@ Window.load_resources do
             x = Input.mouse_x
             y = Input.mouse_y
             Window.draw_box_fill(0, 0, 1400, 700, [128, 255, 255])#背景
-            Window.draw_font(500, 200, "BUDFIELD", font1, {:color => C_BLACK})
+            Window.draw_font(500, 200, "BADFIELD", font1, {:color => C_BLACK})
             Window.draw_box_fill(300, 500, 500, 620, C_WHITE, 0) 
             Window.draw_font(350, 550, "START", font, {:color => C_BLACK}) 
             if x>300 && x<500 && y>500 && y<620
                 if Input.mouse_push?(M_LBUTTON)
+                    Sound[:damage].play
                     gamestart = true
                 end
             end
@@ -378,6 +383,7 @@ Window.load_resources do
             #カードステータスの表示
             if y > 540 && y < 660
                 if x > 90 && x < 210
+                    Sound[:select].play
                     Window.draw_box_fill(1000, 300, 1350, 440, C_WHITE, 0)
                     Window.draw(1020,310,card[hand[0]].image,0)
                     Window.draw_font(1150, 320,card[hand[0]].name, font, {:color => C_BLACK})
@@ -389,6 +395,7 @@ Window.load_resources do
                         Window.draw_font(1150, 360,"HP+#{card[hand[0]].hp}\nMP+#{card[hand[0]].mp}" , font, {:color => C_BLACK})
                     end
                 elsif x > 240 && x < 360
+                    Sound[:select].play
                     Window.draw_box_fill(1000, 300, 1350, 440, C_WHITE, 0)
                     Window.draw(1020,310,card[hand[1]].image,0)
                     Window.draw_font(1150, 320,card[hand[1]].name, font, {:color => C_BLACK})
@@ -400,6 +407,7 @@ Window.load_resources do
                         Window.draw_font(1150, 360,"HP+#{card[hand[1]].hp}\nMP+#{card[hand[1]].mp}" , font, {:color => C_BLACK})
                     end
                 elsif x > 390 && x < 510
+                    Sound[:select].play
                     Window.draw_box_fill(1000, 300, 1350, 440, C_WHITE, 0)
                     Window.draw(1020,310,card[hand[2]].image,0)
                     Window.draw_font(1150, 320,card[hand[2]].name, font, {:color => C_BLACK})
@@ -411,6 +419,7 @@ Window.load_resources do
                         Window.draw_font(1150, 360,"HP+#{card[hand[2]].hp}\nMP+#{card[hand[2]].mp}" , font, {:color => C_BLACK})
                     end
                 elsif x > 540 && x < 660
+                    Sound[:select].play
                     Window.draw_box_fill(1000, 300, 1350, 440, C_WHITE, 0)
                     Window.draw(1020,310,card[hand[3]].image,0)
                     Window.draw_font(1150, 320,card[hand[3]].name, font, {:color => C_BLACK})
@@ -422,6 +431,7 @@ Window.load_resources do
                         Window.draw_font(1150, 360,"HP+#{card[hand[3]].hp}\nMP+#{card[hand[3]].mp}" , font, {:color => C_BLACK})
                     end      
                 elsif x > 690 && x < 810
+                    Sound[:select].play
                     Window.draw_box_fill(1000, 300, 1350, 440, C_WHITE, 0)
                     Window.draw(1020,310,card[hand[4]].image,0)
                     Window.draw_font(1150, 320,card[hand[4]].name, font, {:color => C_BLACK})
