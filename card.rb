@@ -41,6 +41,7 @@ class Magic < Sprite
     def initialize(name,mp,type,img)
         @name = name
         @mp = mp
+        @type = type
         image = img
         super(0,0,image)
     end
