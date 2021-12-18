@@ -16,7 +16,7 @@ Image.register(:boots,'images/boots.png')
 Image.register(:hand,'images/hand.png')
 Image.register(:smile_water,'images/smile_water.png')
 Image.register(:smile_flower,'images/smile_flower.png')
-Image.register(:aura,'images/cold.png')
+Image.register(:aura,'images/aura.png')
 Image.register(:wall,'images/heaven.png')
 
 #音声の読み込み
@@ -24,7 +24,6 @@ Sound.register(:damage,'sounds/damage.wav')
 Sound.register(:select,'sounds/select.wav')
 Sound.register(:cancel,'sounds/cancel.wav')
 Sound.register(:heal,'sounds/heal.wav')
-puts "kkkkkk"
 Window.load_resources do
     Window.width  = 1400
     Window.height = 700
@@ -32,7 +31,6 @@ Window.load_resources do
     com=Com.new()
     font = Font.new(32)
     card=[]
-    puts "llllll"
     #カードの登録
     card << sword = Weapon.new("剣",10,0,Image[:sword])                         #1
     card << axe = Weapon.new("斧",5,0,Image[:axe])                              #2
@@ -51,7 +49,6 @@ Window.load_resources do
     Window.loop do
        #スタート画面
         if gamestart 
-            puts "start"
             font1 = Font.new(150)
             x = Input.mouse_x
             y = Input.mouse_y
