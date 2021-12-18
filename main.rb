@@ -22,6 +22,15 @@ Image.register(:heaven,'images/heaven.png')
 #音声の読み込み
 Sound.register(:damage,'sounds/damage.wav')
 Sound.register(:select,'sounds/select.wav')
+def show (p_hp,p_mp,c_hp,c_mp)
+    Window.draw_box_fill(0, 0, 1400, 700, C_GREEN, 0)#背景
+    Window.draw_box(150, 100, 500, 500, C_WHITE, 0)#フィールド
+    Window.draw_box(600, 100, 950, 500, C_WHITE, 0)#フィールド
+    Window.draw_font(250, 20, "player", font, {:color => C_WHITE})
+    Window.draw_font(700, 20, "com", font, {:color => C_WHITE})
+    Window.draw_font(1000, 20, "player hp:#{p_hp} mp:#{p_mp}", font, {:color => C_WHITE})
+    Window.draw_font(1000, 120, "com hp:#{c_hp} mp:#{c_mp}", font, {:color => C_WHITE})
+end
 
 Window.load_resources do
     Window.width  = 1400
@@ -92,6 +101,8 @@ Window.load_resources do
             Window.draw_box_fill(0, 0, 1400, 700, C_GREEN, 0)#背景
             Window.draw_box(150, 100, 500, 500, C_WHITE, 0)#フィールド
             Window.draw_box(600, 100, 950, 500, C_WHITE, 0)#フィールド
+            Window.draw_font(250, 20, "player", font, {:color => C_WHITE})
+            Window.draw_font(700, 20, "com", font, {:color => C_WHITE})
             Window.draw_font(1000, 20, "player hp:#{player.hp} mp:#{player.mp}", font, {:color => C_WHITE})
             Window.draw_font(1000, 120, "com hp:#{com.hp} mp:#{com.mp}", font, {:color => C_WHITE})
 
@@ -109,13 +120,13 @@ Window.load_resources do
           
             ############     player attack     ##########
             if turn==0
-                Window.draw_font(100, 20, "player attack", font, {:color => C_WHITE})
+                Window.draw_font(500, 20, "→", font, {:color => C_WHITE})
                 
                 ###  カード選択  ###
                 if Input.mouse_push?(M_LBUTTON)
                     if y > 540 && y < 660
                         if x > 90 && x < 210
-                            if hand_exist[0] == 1 && !card[hand[0]].kind_of?(Armor)
+                            if hand_exist[0] == 1 && !card[hand[0]].kind_of?(Armor) && field.size == 0
                                 field << hand[0]
                                 hand_exist[0]=0
                             elsif hand_exist[0] == 0
@@ -123,7 +134,7 @@ Window.load_resources do
                                 hand_exist[0]=1
                             end
                         elsif x > 240 && x < 360
-                            if hand_exist[1] == 1  && !card[hand[1]].kind_of?(Armor)
+                            if hand_exist[1] == 1  && !card[hand[1]].kind_of?(Armor) && field.size == 0
                                 field << hand[1]
                                 hand_exist[1]=0
                             elsif hand_exist[1] == 0
@@ -131,7 +142,7 @@ Window.load_resources do
                                 hand_exist[1]=1
                             end
                         elsif x > 390 && x < 510
-                            if hand_exist[2] == 1  && !card[hand[2]].kind_of?(Armor)
+                            if hand_exist[2] == 1  && !card[hand[2]].kind_of?(Armor) && field.size == 0
                                 field << hand[2]
                                 hand_exist[2]=0
                             elsif hand_exist[2] == 0
@@ -139,7 +150,7 @@ Window.load_resources do
                                 hand_exist[2]=1
                             end
                         elsif x > 540 && x < 660
-                            if hand_exist[3] == 1  && !card[hand[3]].kind_of?(Armor)
+                            if hand_exist[3] == 1  && !card[hand[3]].kind_of?(Armor) && field.size == 0
                                 field << hand[3]
                                 hand_exist[3]=0
                             elsif hand_exist[3] == 0
@@ -147,7 +158,7 @@ Window.load_resources do
                                 hand_exist[3]=1
                             end
                         elsif x > 690 && x < 810
-                            if hand_exist[4] == 1  && !card[hand[4]].kind_of?(Armor)
+                            if hand_exist[4] == 1  && !card[hand[4]].kind_of?(Armor) && field.size == 0
                                 field << hand[4]
                                 hand_exist[4]=0
                             elsif hand_exist[4] == 0
@@ -168,24 +179,30 @@ Window.load_resources do
                 
             ###############    com attack   ############
             elsif turn==1
-                Window.draw_font(100, 20, "com attack", font, {:color => C_WHITE})
+                Window.draw_font(500, 20, "←", font, {:color => C_WHITE})
                 
+                5.times do |n| 
+                    if card[comhand[n]].kind_of?(Weapon) || card[comhand[n]].kind_of?(Item)
+                        break
+                    end
+                    Window.draw_font(500, 300, "祈る", font, {:color => C_WHITE})
+                    sleep 2
+                    turn=0
+                end
                 a=rand(5)
-                if comhand_exist[a] == 1 && comfield.size < 1 && !card[comhand[a]].kind_of?(Armor)
+                if comhand_exist[a] == 1 && comfield.size == 0  && !card[comhand[a]].kind_of?(Armor)
                     comfield << comhand[a]
                     comhand_exist[a] = 0
+                    turn=2
                 end
-                turn=2
-                if Input.mouse_push?(M_LBUTTON) #playerのターンへ
-                    
-                end 
+                 
                 
-                
+        
                 
                 
             ############     player defense     ##########
             elsif turn==2
-                Window.draw_font(100, 20, "player defence", font, {:color => C_WHITE})
+                Window.draw_font(500, 20, "←", font, {:color => C_WHITE})
                 if field.size == 0
                     Window.draw_box_fill(200, 430, 450, 480, C_WHITE, 0)#祈るボタン
                     Window.draw_font(300, 435, "祈る", font, {:color => C_BLACK})
@@ -193,6 +210,7 @@ Window.load_resources do
                 
                 comfield.each do |n|                          
                     if card[n].kind_of?(Item)                 #Itemだけならスキップ
+                        sleep 1
                         turn=0
                     elsif
                         turn=2
@@ -300,7 +318,7 @@ Window.load_resources do
                 
             ###############    com defence   ############
             elsif turn==3
-                Window.draw_font(100, 20, "com defence", font, {:color => C_WHITE})
+                Window.draw_font(500, 20, "→", font, {:color => C_WHITE})
                 
                 a=rand(5)
                 if comhand_exist[a] == 1 && comfield.size < 2 && card[comhand[a]].kind_of?(Armor)
