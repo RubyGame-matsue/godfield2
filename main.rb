@@ -2,8 +2,8 @@ include DXOpal
 require 'dxopal'
 require_remote 'player.rb'
 require_remote 'com.rb'
-require_remote 'card.rb' #画像の読み込み
-# reauire_remote 'game.rb'
+require_remote 'card.rb'
+
 
 #画像の読み込み
 Image.register(:sword,'images/sword.png')
@@ -14,7 +14,7 @@ Image.register(:helmet,'images/helmet.png')
 Image.register(:chest,'images/chest.png')
 Image.register(:boots,'images/boots.png')
 Image.register(:hand,'images/hand.png')
-Image.register(:smile_water,'images/smile_water.png')
+Image.register(:healbook,'images/healbook.png')
 Image.register(:smile_flower,'images/smile_flower.png')
 Image.register(:aura,'images/aura.png')
 Image.register(:wall,'images/heaven.png')
@@ -40,7 +40,7 @@ Window.load_resources do
     card << chest = Armor.new("チェスト",6,0,Image[:chest])                     #6
     card << boots = Armor.new("ブーツ",4,0,Image[:boots])                       #7
     card << hand = Armor.new("小手",2,0,Image[:hand])                           #8
-    card << smile_water = Item.new("スマイルの水",5,0,Image[:smile_water])      #9
+    card << smile_water = Item.new("回復呪文",5,0,Image[:healbook])             #9
     card << smile_flower = Item.new("スマイルの花",0,5,Image[:smile_flower])    #10
     card << aura = Magic.new("オーラ",10,1,Image[:aura])                        #11
     card << wall = Magic.new("壁",5,4,Image[:wall])                             #12
@@ -53,10 +53,10 @@ Window.load_resources do
             x = Input.mouse_x
             y = Input.mouse_y
             Window.draw_box_fill(0, 0, 1400, 700, [180, 250, 200])#背景
-            Window.draw_font(100, 200, "BUDFIELD", font1, {:color => [240,130,200]})
-            Window.draw_box_fill(300, 500, 500, 620, C_WHITE, 0) 
-            Window.draw_font(350, 550, "生誕する", font, {:color => C_BLACK})  
-            if x>300 && x<500 && y>500 && y<620
+            Window.draw_font(300, 200, "BUDFIELD", font1, {:color => [240,130,200]})
+            Window.draw_box_fill(550, 500, 750, 620, C_WHITE, 0) 
+            Window.draw_font(590, 550, "生誕する", font, {:color => C_BLACK})  
+            if x>550 && x<750 && y>500 && y<620
                 if Input.mouse_push?(M_LBUTTON)
                     gamestart = false
                 end
@@ -109,10 +109,10 @@ Window.load_resources do
                     Window.draw_box_fill(0, 0, 1400, 700, [128, 255, 150], 0)#背景
                 Window.draw_box(150, 100, 500, 500, C_WHITE, 0)#フィールド
                 Window.draw_box(600, 100, 950, 500, C_WHITE, 0)#フィールド
-                Window.draw_font(250, 20, "player", font, {:color => C_WHITE})
-                Window.draw_font(700, 20, "com", font, {:color => C_WHITE})
-                Window.draw_font(1000, 20, "player hp:#{player.hp} mp:#{player.mp}", font, {:color => C_WHITE})
-                Window.draw_font(1000, 120, "com hp:#{com.hp} mp:#{com.mp}", font, {:color => C_WHITE})
+                Window.draw_font(250, 20, "player", font, {:color => C_BLACK})
+                Window.draw_font(700, 20, "com", font, {:color => C_BLACK})
+                Window.draw_font(1000, 20, "player hp:#{player.hp} mp:#{player.mp}", font, {:color => C_BLACK})
+                Window.draw_font(1000, 120, "com hp:#{com.hp} mp:#{com.mp}", font, {:color => C_BLACK})
 
                 if player.hp<=0 || com.hp<=0 
                     if player.hp<=0
@@ -134,7 +134,7 @@ Window.load_resources do
             
                 ############     player attack     ##########
                 if turn==0
-                    Window.draw_font(500, 20, "→", font, {:color => C_WHITE})
+                    Window.draw_font(500, 20, "→", font, {:color => C_BLACK})
                     
                     ###  カード選択  ###
                     if Input.mouse_push?(M_LBUTTON)
@@ -314,7 +314,7 @@ Window.load_resources do
                             if attack-defence > 0
                                 Sound[:damage].play
                                 player.hp -= attack-defence
-                                Window.draw_font(1200, 500, "#{attack-defence}ダメージ!!!", font, {:color => C_WHITE})
+                                Window.draw_font(1000, 500, "#{attack-defence}ダメージ!!!", font, {:color => C_RED})
                             end
                             
                             comfield.each do |n|                          
@@ -370,7 +370,7 @@ Window.load_resources do
                         end
                     end
                     if attack-defence > 0
-                        Window.draw_font(1200, 500, "#{attack-defence}ダメージ!!!", font, {:color => C_WHITE}) 
+                        Window.draw_font(1000, 500, "#{attack-defence}ダメージ!!!", font, {:color => C_RED}) 
                     end
                     if Input.mouse_push?(M_LBUTTON) #playerのターンへ
                         if attack-defence > 0
@@ -437,9 +437,9 @@ Window.load_resources do
                 if field.size == 0
                     Window.draw_box_fill(200, 430, 450, 480, C_WHITE, 0)#祈るボタン
                     if(turn == 2)
-                        Window.draw_font(300, 435, "許す", font, {:color => C_BLACK})
+                        Window.draw_font(300, 430, "許す", font, {:color => C_BLACK})
                     else
-                        Window.draw_font(300, 435, "祈る", font, {:color => C_BLACK})
+                        Window.draw_font(300, 430, "祈る", font, {:color => C_BLACK})
                     end
                 end
                 #カードステータスの表示
