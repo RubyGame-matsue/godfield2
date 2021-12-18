@@ -14,10 +14,10 @@ Image.register(:helmet,'images/helmet.png')
 Image.register(:chest,'images/chest.png')
 Image.register(:boots,'images/boots.png')
 Image.register(:hand,'images/hand.png')
-Image.register(:healbook,'images/healbook.png')
+Image.register(:book,'images/book.png')
 Image.register(:smile_flower,'images/smile_flower.png')
 Image.register(:aura,'images/aura.png')
-Image.register(:wall,'images/heaven.png')
+Image.register(:waterfall,'images/waterfall.png')
 
 #音声の読み込み
 Sound.register(:damage,'sounds/damage.wav')
@@ -40,10 +40,10 @@ Window.load_resources do
     card << chest = Armor.new("チェスト",6,0,Image[:chest])                     #6
     card << boots = Armor.new("ブーツ",4,0,Image[:boots])                       #7
     card << hand = Armor.new("小手",2,0,Image[:hand])                           #8
-    card << smile_water = Item.new("回復呪文",5,0,Image[:healbook])             #9
-    card << smile_flower = Item.new("スマイルの花",0,5,Image[:smile_flower])    #10
+    card << book = Item.new("呪文",0,5,Image[:book])                            #9
+    card << smile_flower = Item.new("スマイルの花",5,0,Image[:smile_flower])    #10
     card << aura = Magic.new("オーラ",10,1,Image[:aura])                        #11
-    card << wall = Magic.new("壁",5,4,Image[:wall])                             #12
+    card << waterfall = Magic.new("滝",5,4,Image[:waterfall])                             #12
     gamestart = true
     gameset = false
     Window.loop do
@@ -437,9 +437,9 @@ Window.load_resources do
                 if field.size == 0
                     Window.draw_box_fill(200, 430, 450, 480, C_WHITE, 0)#祈るボタン
                     if(turn == 2)
-                        Window.draw_font(300, 430, "許す", font, {:color => C_BLACK})
+                        Window.draw_font(300, 450, "許す", font, {:color => C_BLACK})
                     else
-                        Window.draw_font(300, 430, "祈る", font, {:color => C_BLACK})
+                        Window.draw_font(300, 450, "祈る", font, {:color => C_BLACK})
                     end
                 end
                 #カードステータスの表示
